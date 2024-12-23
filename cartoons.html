@@ -9,84 +9,111 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #121212;
+            background-color: #1a1a1a;
             color: #ffffff;
         }
-        nav {
-            background-color: #1a1a1a;
-            padding: 10px;
-            text-align: center;
+
+        .navbar {
+            background-color: #333333;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        nav a {
+        .navbar a {
             color: #f39c12;
-            margin: 0 15px;
             text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.2em;
+            transition: color 0.3s ease;
         }
+        .navbar a:hover {
+            color: #ffffff;
+        }
+
         .header {
-            background-color: #1a1a1a;
-            padding: 20px;
             text-align: center;
+            padding: 50px 20px;
+            background-color: #444444;
         }
         .header h1 {
             margin: 0;
-            font-size: 2.5em;
+            font-size: 2.8em;
             color: #f39c12;
         }
-        .cartoons-list {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin: 20px;
+        .header p {
+            font-size: 1.2em;
+            color: #dddddd;
         }
-        .cartoon {
-            width: 300px;
-            background-color: #1a1a1a;
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .content-card {
+            background-color: #333333;
             border-radius: 10px;
-            padding: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .content-card:hover {
+            transform: scale(1.05);
+        }
+        .content-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .content-card h3 {
             margin: 10px;
+            color: #ffffff;
+            font-size: 1.1em;
+        }
+        .content-card a {
+            display: block;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        .cartoon img {
-            max-width: 100%;
-            height: 200px;
-            border-radius: 10px;
-        }
-        .cartoon h3 {
-            margin: 10px 0;
-        }
-        .cartoon a {
-            text-decoration: none;
+            margin: 10px;
             color: #f39c12;
-            font-weight: bold;
+            text-decoration: none;
+        }
+        .content-card a:hover {
+            color: #ffffff;
         }
     </style>
 </head>
 <body>
-    <nav>
+    <!-- Navigation Bar -->
+    <div class="navbar">
         <a href="index.html">Home</a>
         <a href="movies.html">Movies</a>
         <a href="cartoons.html">Cartoons</a>
         <a href="dramas.html">Dramas</a>
-    </nav>
+    </div>
+
+    <!-- Header Section -->
     <div class="header">
         <h1>Cartoons</h1>
-        <p>Watch and Earn by Streaming Cartoons!</p>
+        <p>Enjoy the most popular and trending cartoons!</p>
     </div>
-    <div class="cartoons-list">
-        <div class="cartoon">
-            <img src="https://via.placeholder.com/300x200?text=Cartoon1" alt="Cartoon 1">
-            <h3>Cartoon 1</h3>
+
+    <!-- Cartoons Section -->
+    <div class="content-grid">
+        <div class="content-card">
+            <img src="https://via.placeholder.com/200x150?text=Cartoon+1" alt="Cartoon 1">
+            <h3>Cartoon Title 1</h3>
             <a href="#">Watch Now</a>
         </div>
-        <div class="cartoon">
-            <img src="https://via.placeholder.com/300x200?text=Cartoon2" alt="Cartoon 2">
-            <h3>Cartoon 2</h3>
+        <div class="content-card">
+            <img src="https://via.placeholder.com/200x150?text=Cartoon+2" alt="Cartoon 2">
+            <h3>Cartoon Title 2</h3>
             <a href="#">Watch Now</a>
         </div>
-        <div class="cartoon">
-            <img src="https://via.placeholder.com/300x200?text=Cartoon3" alt="Cartoon 3">
-            <h3>Cartoon 3</h3>
+        <div class="content-card">
+            <img src="https://via.placeholder.com/200x150?text=Cartoon+3" alt="Cartoon 3">
+            <h3>Cartoon Title 3</h3>
             <a href="#">Watch Now</a>
         </div>
     </div>

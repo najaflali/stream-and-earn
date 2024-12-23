@@ -9,84 +9,111 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #121212;
+            background-color: #1a1a1a;
             color: #ffffff;
         }
-        nav {
-            background-color: #1a1a1a;
-            padding: 10px;
-            text-align: center;
+
+        .navbar {
+            background-color: #333333;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        nav a {
+        .navbar a {
             color: #f39c12;
-            margin: 0 15px;
             text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.2em;
+            transition: color 0.3s ease;
         }
+        .navbar a:hover {
+            color: #ffffff;
+        }
+
         .header {
-            background-color: #1a1a1a;
-            padding: 20px;
             text-align: center;
+            padding: 50px 20px;
+            background-color: #444444;
         }
         .header h1 {
             margin: 0;
-            font-size: 2.5em;
+            font-size: 2.8em;
             color: #f39c12;
         }
-        .dramas-list {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin: 20px;
+        .header p {
+            font-size: 1.2em;
+            color: #dddddd;
         }
-        .drama {
-            width: 300px;
-            background-color: #1a1a1a;
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .content-card {
+            background-color: #333333;
             border-radius: 10px;
-            padding: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .content-card:hover {
+            transform: scale(1.05);
+        }
+        .content-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .content-card h3 {
             margin: 10px;
+            color: #ffffff;
+            font-size: 1.1em;
+        }
+        .content-card a {
+            display: block;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        .drama img {
-            max-width: 100%;
-            height: 200px;
-            border-radius: 10px;
-        }
-        .drama h3 {
-            margin: 10px 0;
-        }
-        .drama a {
-            text-decoration: none;
+            margin: 10px;
             color: #f39c12;
-            font-weight: bold;
+            text-decoration: none;
+        }
+        .content-card a:hover {
+            color: #ffffff;
         }
     </style>
 </head>
 <body>
-    <nav>
+    <!-- Navigation Bar -->
+    <div class="navbar">
         <a href="index.html">Home</a>
         <a href="movies.html">Movies</a>
         <a href="cartoons.html">Cartoons</a>
         <a href="dramas.html">Dramas</a>
-    </nav>
+    </div>
+
+    <!-- Header Section -->
     <div class="header">
         <h1>Dramas</h1>
-        <p>Watch and Earn by Streaming Dramas!</p>
+        <p>Watch the most engaging and trending dramas!</p>
     </div>
-    <div class="dramas-list">
-        <div class="drama">
-            <img src="https://via.placeholder.com/300x200?text=Drama1" alt="Drama 1">
-            <h3>Drama 1</h3>
+
+    <!-- Dramas Section -->
+    <div class="content-grid">
+        <div class="content-card">
+            <img src="https://via.placeholder.com/200x150?text=Drama+1" alt="Drama 1">
+            <h3>Drama Title 1</h3>
             <a href="#">Watch Now</a>
         </div>
-        <div class="drama">
-            <img src="https://via.placeholder.com/300x200?text=Drama2" alt="Drama 2">
-            <h3>Drama 2</h3>
+        <div class="content-card">
+            <img src="https://via.placeholder.com/200x150?text=Drama+2" alt="Drama 2">
+            <h3>Drama Title 2</h3>
             <a href="#">Watch Now</a>
         </div>
-        <div class="drama">
-            <img src="https://via.placeholder.com/300x200?text=Drama3" alt="Drama 3">
-            <h3>Drama 3</h3>
+        <div class="content-card">
+            <img src="https://via.placeholder.com/200x150?text=Drama+3" alt="Drama 3">
+            <h3>Drama Title 3</h3>
             <a href="#">Watch Now</a>
         </div>
     </div>
