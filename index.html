@@ -185,6 +185,21 @@
             </div>
         </div>
     </div>
-
+<!-- Feedback Form -->
+<div style="margin: 20px; padding: 20px; background-color: #333333; border-radius: 8px;">
+    <h2 style="color: #f39c12;">Submit Your Feedback</h2>
+    <form action="https://formspree.io/f/{your_formspree_endpoint}" method="POST">
+        <label for="name" style="color: #ffffff;">Your Name:</label><br>
+        <input type="text" id="name" name="name" required style="width: 100%; padding: 10px; margin: 10px 0; border: none; border-radius: 5px;"><br>
+        
+        <label for="email" style="color: #ffffff;">Your Email:</label><br>
+        <input type="email" id="email" name="email" required style="width: 100%; padding: 10px; margin: 10px 0; border: none; border-radius: 5px;"><br>
+        
+        <label for="message" style="color: #ffffff;">Your Feedback:</label><br>
+        <textarea id="message" name="message" rows="5" required style="width: 100%; padding: 10px; margin: 10px 0; border: none; border-radius: 5px;"></textarea><br>
+        
+        <button type="submit" style="background-color: #f39c12; color: #ffffff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+    </form>
+</div>
 </body>
 </html>
