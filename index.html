@@ -222,3 +222,16 @@
         window.location.href = "login.html"; // Redirect to login page
     }
 </script>
+<button id="logoutButton">Logout</button>
+
+<script>
+    const logoutButton = document.getElementById("logoutButton");
+
+    logoutButton.addEventListener("click", function () {
+        // Clear the login flag
+        localStorage.removeItem("isLoggedIn");
+
+        // Redirect to the login page
+        window.location.href = "login.html";
+    });
+</script>
