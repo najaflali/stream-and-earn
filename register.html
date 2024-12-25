@@ -3,32 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Register - Stream & Earn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .register-container {
+            background-color: #333333;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .register-container h1 {
+            text-align: center;
+            color: #f39c12;
+            margin-bottom: 20px;
+        }
+
+        .register-container label {
+            font-size: 1em;
+            margin: 10px 0 5px;
+            display: block;
+        }
+
+        .register-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #444444;
+            color: #ffffff;
+        }
+
+        .register-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #f39c12;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .register-container button:hover {
+            background-color: #ffffff;
+            color: #f39c12;
+        }
+
+        .register-container .link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .register-container .link a {
+            color: #f39c12;
+            text-decoration: none;
+        }
+
+        .register-container .link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Register on StarGalaxy</h1>
-    <form id="registerForm">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <button type="submit">Register</button>
-    </form>
-
+    <div class="register-container">
+        <h1>Register</h1>
+        <form onsubmit="handleRegister(event)">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">Register</button>
+        </form>
+        <div class="link">
+            <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+    </div>
     <script>
-        const registerForm = document.getElementById("registerForm");
-
-        registerForm.addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent form submission
-
-            // Redirect to the login page after registration
+        function handleRegister(event) {
+            event.preventDefault();
+            // Example register logic
+            alert("Registration successful!");
             window.location.href = "login.html";
-        });
+        }
     </script>
 </body>
 </html>
