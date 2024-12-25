@@ -213,3 +213,12 @@
 
 </body>
 </html>
+<script>
+    // Check if the user is logged in
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+    // If the user is not logged in, redirect them to the login page
+    if (!isLoggedIn) {
+        window.location.href = "login.html"; // Redirect to login page
+    }
+</script>
