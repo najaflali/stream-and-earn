@@ -3,32 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - Stream & Earn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #333333;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-container h1 {
+            text-align: center;
+            color: #f39c12;
+            margin-bottom: 20px;
+        }
+
+        .login-container label {
+            font-size: 1em;
+            margin: 10px 0 5px;
+            display: block;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #444444;
+            color: #ffffff;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #f39c12;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-container button:hover {
+            background-color: #ffffff;
+            color: #f39c12;
+        }
+
+        .login-container .link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .login-container .link a {
+            color: #f39c12;
+            text-decoration: none;
+        }
+
+        .login-container .link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Login to StarGalaxy</h1>
-    <form id="loginForm">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <button type="submit">Login</button>
-    </form>
-
+    <div class="login-container">
+        <h1>Login</h1>
+        <form onsubmit="handleLogin(event)">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">Login</button>
+        </form>
+        <div class="link">
+            <p>Don't have an account? <a href="register.html">Register</a></p>
+        </div>
+    </div>
     <script>
-        const loginForm = document.getElementById("loginForm");
-
-        loginForm.addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent form submission
-
-            // Set the login flag in local storage
+        function handleLogin(event) {
+            event.preventDefault();
+            // Example login logic
             localStorage.setItem("isLoggedIn", true);
-
-            // Redirect to the homepage or dashboard
             window.location.href = "index.html";
-        });
+        }
     </script>
 </body>
 </html>
