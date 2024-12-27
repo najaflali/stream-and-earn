@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Player</title>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px;">
+        <h1 id="movie-title">Loading...</h1>
+        <video id="movie-player" width="80%" controls>
+            <source id="movie-source" src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <script>
+        // Get URL parameters (e.g., ?title=Avenger&video=avenger1.mp4)
+        const urlParams = new URLSearchParams(window.location.search);
+        const title = urlParams.get('title');
+        const video = urlParams.get('video');
+
+        // Update the page dynamically
+        document.getElementById('movie-title').innerText = title;
+        document.getElementById('movie-source').src = video;
+        document.getElementById('movie-player').load(); // Reload video source
+    </script>
+</body>
+</html>
