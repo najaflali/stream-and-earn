@@ -3,27 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Player</title>
+    <title>Watch Movie</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .navbar {
+            background-color: #333333;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: #f39c12;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.2em;
+            transition: color 0.3s ease;
+        }
+        .navbar a:hover {
+            color: #ffffff;
+        }
+
+        .movie-container {
+            text-align: center;
+            margin: 50px 20px;
+        }
+        .movie-title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #f39c12;
+        }
+        video {
+            width: 80%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .earnings-info {
+            font-size: 1.2em;
+            margin-top: 20px;
+            color: #dddddd;
+        }
+
+        footer {
+            background-color: #333333;
+            padding: 15px;
+            text-align: center;
+            color: #ffffff;
+        }
+        footer a {
+            color: #f39c12;
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        // Function to extract query parameters
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                title: params.get('title'),
+                video: params.get('video')
+            };
+        }
+
+        // Function to dynamically set movie details
+        function loadMovie() {
+            const { title, video } = getQueryParams();
+            document.getElementById('movie-title').textContent = title || 'Unknown Movie';
+            document.getElementById('movie-player').src = video || '';
+        }
+    </script>
 </head>
-<body>
-    <div style="text-align: center; margin-top: 50px;">
-        <h1 id="movie-title">Loading...</h1>
-        <video id="movie-player" width="80%" controls>
-            <source id="movie-source" src="" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+<body onload="loadMovie()">
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div>
+            <a href="index.html">Home</a>
+            <a href="movies.html">Movies</a>
+            <a href="cartoons.html">Cartoons</a>
+            <a href="dramas.html">Dramas</a>
+        </div>
     </div>
 
-    <script>
-        // Get URL parameters (e.g., ?title=Avenger&video=avenger1.mp4)
-        const urlParams = new URLSearchParams(window.location.search);
-        const title = urlParams.get('title');
-        const video = urlParams.get('video');
+    <!-- Movie Section -->
+    <div class="movie-container">
+        <h1 id="movie-title" class="movie-title">Loading Movie...</h1>
+        <video id="movie-player" controls autoplay>
+            Your browser does not support the video tag.
+        </video>
+        <p class="earnings-info">Earn by watching this movie! Stay tuned for more rewards.</p>
+    </div>
 
-        // Update the page dynamically
-        document.getElementById('movie-title').innerText = title;
-        document.getElementById('movie-source').src = video;
-        document.getElementById('movie-player').load(); // Reload video source
-    </script>
+    <footer>
+        <p>
+            <a href="privacy.html">Privacy Policy</a> |
+            <a href="terms.html">Terms of Service</a>
+        </p>
+    </footer>
+
 </body>
 </html>
