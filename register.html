@@ -3,104 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>User Registration</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             background-color: #1a1a1a;
             color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
         }
 
-        .form-container {
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
             background-color: #333333;
             padding: 20px;
             border-radius: 8px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-container h1 {
-            color: #f39c12;
             text-align: center;
         }
 
-        .form-container input {
-            width: 100%;
+        .container h1 {
+            margin-bottom: 20px;
+            color: #f39c12;
+        }
+
+        input {
+            width: 90%;
             padding: 10px;
             margin: 10px 0;
             border: none;
             border-radius: 5px;
-            background-color: #444444;
-            color: #ffffff;
         }
 
-        .form-container button {
-            width: 100%;
+        button {
+            width: 94%;
             padding: 10px;
+            margin-top: 10px;
             background-color: #f39c12;
             color: #ffffff;
             border: none;
             border-radius: 5px;
+            font-size: 1em;
             cursor: pointer;
         }
 
-        .form-container button:hover {
+        button:hover {
             background-color: #ffffff;
             color: #f39c12;
         }
 
-        .form-container p {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .form-container a {
+        .message {
             color: #f39c12;
-            text-decoration: none;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h1>Register</h1>
-        <form id="registerForm">
-            <input type="email" id="email" placeholder="Enter Email" required>
-            <input type="password" id="password" placeholder="Enter Password" required>
-            <button type="submit">Register</button>
-        </form>
-        <p>Already have an account? <a href="login.html">Login</a></p>
-    </div>
-    <script>
-        const registerForm = document.getElementById("registerForm");
 
-        registerForm.addEventListener("submit", function (e) {
-            e.preventDefault();
+<div class="container">
+    <h1>Register</h1>
+    <input type="text" id="name" placeholder="Enter Your Name" required>
+    <input type="email" id="email" placeholder="Enter Your Email" required>
+    <input type="password" id="password" placeholder="Enter Your Password" required>
+    <button onclick="registerUser()">Register</button>
+    <div class="message" id="message"></div>
+</div>
 
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+<script>
+    function registerUser() {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
-            // Retrieve users from localStorage
-            const users = JSON.parse(localStorage.getItem("users")) || {};
+        // Validate input
+        if (!name || !email || !password) {
+            document.getElementById('message').innerText = 'All fields are required!';
+            return;
+        }
 
-            // Check if the email is already registered
-            if (users[email]) {
-                alert("This email is already registered.");
-                return;
-            }
+        // Store user data
+        const user = { name, email, password };
+        localStorage.setItem('user', JSON.stringify(user));
 
-            // Save the user to localStorage
-            users[email] = btoa(password); // Encode the password
-            localStorage.setItem("users", JSON.stringify(users));
+        // Show success message
+        document.getElementById('message').innerText = 'Registration Successful!';
+    }
+</script>
 
-            alert("Registration successful!");
-            window.location.href = "login.html";
-        });
-    </script>
 </body>
 </html>
