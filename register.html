@@ -133,5 +133,24 @@
             window.location.href = 'login.html';
         });
     </script>
+<!-- Firebase Libraries -->
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"></script>
+
+<script>
+  // Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
+    authDomain: "streamandearn.firebaseapp.com",
+    projectId: "streamandearn",
+    storageBucket: "streamandearn.firebasestorage.app",
+    messagingSenderId: "276919948850",
+    appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+</script>
 </body>
 </html>
