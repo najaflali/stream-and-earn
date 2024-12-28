@@ -4,21 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <!-- Add your CSS for the theme -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Register</h1>
-    <form id="registerForm">
-        <label for="email">Email:</label>
-        <input type="email" id="email" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" required><br><br>
-        <button type="submit">Register</button>
-    </form>
-    <p id="registerMessage"></p>
+    <div class="register-container">
+        <h1>Register</h1>
+        <form id="registerForm" class="register-form">
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Enter your email" required><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter your password" required><br><br>
+            <button type="submit" class="btn">Register</button>
+        </form>
+        <p id="registerMessage" class="message"></p>
+    </div>
 
-    <!-- Firebase Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
+    <!-- Firebase CDN Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth-compat.js"></script>
 
     <script>
         // Firebase configuration
@@ -26,13 +30,13 @@
             apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
             authDomain: "streamandearn.firebaseapp.com",
             projectId: "streamandearn",
-            storageBucket: "streamandearn.firebaseapp.com",
+            storageBucket: "streamandearn.appspot.com",
             messagingSenderId: "276919948850",
             appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
         // Handle Registration
