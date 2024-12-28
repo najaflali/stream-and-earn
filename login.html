@@ -1,121 +1,109 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Stream and Earn</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-      color: #333;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    .container {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      padding: 30px;
-      width: 350px;
-      text-align: center;
-    }
+        .form-container {
+            background-color: #333333;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
 
-    .container h1 {
-      margin-bottom: 20px;
-      font-size: 24px;
-      color: #4facfe;
-    }
+        .form-container h1 {
+            color: #f39c12;
+            text-align: center;
+        }
 
-    .container input {
-      width: 90%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 16px;
-    }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #444444;
+            color: #ffffff;
+        }
 
-    .container button {
-      width: 100%;
-      padding: 10px;
-      background-color: #4facfe;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #f39c12;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    .container button:hover {
-      background-color: #00a8fe;
-    }
+        .form-container button:hover {
+            background-color: #ffffff;
+            color: #f39c12;
+        }
 
-    .container p {
-      margin-top: 15px;
-      font-size: 14px;
-    }
+        .form-container p {
+            text-align: center;
+            margin-top: 15px;
+        }
 
-    .container p a {
-      color: #4facfe;
-      text-decoration: none;
-    }
-
-    .container p a:hover {
-      text-decoration: underline;
-    }
-  </style>
+        .form-container a {
+            color: #f39c12;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Login</h1>
-    <form onsubmit="event.preventDefault(); login();">
-      <input type="email" id="email" placeholder="Enter your email" required>
-      <input type="password" id="password" placeholder="Enter your password" required>
-      <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="register.html">Register here</a></p>
-  </div>
+    <div class="form-container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Enter Email" required>
+            <input type="password" id="password" placeholder="Enter Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="register.html">Register</a></p>
+    </div>
+    <script>
+        const loginForm = document.getElementById("loginForm");
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+        loginForm.addEventListener("submit", function (e) {
+            e.preventDefault();
 
-  <script>
-    // Your Firebase configuration
-    var firebaseConfig = {
-      apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
-      authDomain: "streamandearn.firebaseapp.com",
-      projectId: "streamandearn",
-      storageBucket: "streamandearn.appspot.com",
-      messagingSenderId: "276919948850",
-      appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
-    };
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+            // Retrieve users from localStorage
+            const users = JSON.parse(localStorage.getItem("users")) || {};
 
-    // Login function
-    function login() {
-      var email = document.getElementById("email").value;
-      var password = document.getElementById("password").value;
+            // Check if the email exists and password matches
+            if (!users[email]) {
+                alert("This email is not registered.");
+                return;
+            }
 
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          alert("Login successful!");
-          console.log("Logged in as:", userCredential.user.email);
-        })
-        .catch((error) => {
-          alert("Error: " + error.message);
-          console.error(error);
+            if (users[email] !== btoa(password)) {
+                alert("Incorrect password.");
+                return;
+            }
+
+            // Set login flag
+            localStorage.setItem("isLoggedIn", email);
+            alert("Login successful!");
+            window.location.href = "index.html";
         });
-    }
-  </script>
+    </script>
 </body>
-</html>
+</html>    
