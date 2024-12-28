@@ -6,89 +6,90 @@
   <title>Login - Stream and Earn</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-    }
-
-    .login-container {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      width: 300px;
-      text-align: center;
-    }
-
-    .login-container h1 {
-      margin-bottom: 20px;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
       color: #333;
     }
 
-    .login-container input {
-      width: 100%;
-      padding: 10px;
+    .container {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      width: 350px;
+      text-align: center;
+    }
+
+    .container h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #4facfe;
+    }
+
+    .container input {
+      width: 90%;
+      padding: 12px;
       margin: 10px 0;
       border: 1px solid #ddd;
       border-radius: 5px;
-      font-size: 14px;
-    }
-
-    .login-container button {
-      background-color: #007BFF;
-      color: #fff;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
       font-size: 16px;
     }
 
-    .login-container button:hover {
-      background-color: #0056b3;
+    .container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4facfe;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
 
-    .login-container p {
+    .container button:hover {
+      background-color: #00a8fe;
+    }
+
+    .container p {
       margin-top: 15px;
       font-size: 14px;
-      color: #555;
     }
 
-    .login-container p a {
-      color: #007BFF;
+    .container p a {
+      color: #4facfe;
       text-decoration: none;
     }
 
-    .login-container p a:hover {
+    .container p a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
+  <div class="container">
     <h1>Login</h1>
     <form onsubmit="event.preventDefault(); login();">
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
+      <input type="email" id="email" placeholder="Enter your email" required>
+      <input type="password" id="password" placeholder="Enter your password" required>
       <button type="submit">Login</button>
     </form>
     <p>Don't have an account? <a href="register.html">Register here</a></p>
   </div>
 
-  <!-- Firebase App (required) -->
-  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js"></script>
-  <!-- Firebase Authentication -->
-  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
-  <!-- Firebase Initialization and Login Script -->
   <script>
-    // Firebase configuration
-    const firebaseConfig = {
+    // Your Firebase configuration
+    var firebaseConfig = {
       apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
       authDomain: "streamandearn.firebaseapp.com",
       projectId: "streamandearn",
@@ -102,13 +103,13 @@
 
     // Login function
     function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
 
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           alert("Login successful!");
-          console.log("User Info:", userCredential.user);
+          console.log("Logged in as:", userCredential.user.email);
         })
         .catch((error) => {
           alert("Error: " + error.message);
