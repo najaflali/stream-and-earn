@@ -1,174 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Add Firebase SDKs before your own scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - StreamAndEarn</title>
 
-    <script>
-      // Your Firebase config object
-      const firebaseConfig = {
-        apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
-        authDomain: "streamandearn.firebaseapp.com",
-        projectId: "streamandearn",
-        storageBucket: "streamandearn.appspot.com",
-        messagingSenderId: "276919948850",
-        appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
-      };
+  <!-- Firebase SDK v8.x.x -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
-      // Initialize Firebase
-      const app = firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
-      const firestore = firebase.firestore();
-    </script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stream & Earn - Register</title>
-    <style>
-        /* General Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1a1a1a;
-            color: #ffffff;
-        }
+  <style>
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* Navbar */
-        .navbar {
-            background-color: #333333;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #1a1a1a;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-        .navbar a {
-            color: #f39c12;
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 1.2em;
-            transition: color 0.3s ease;
-        }
+    .container {
+      background: #333333;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 480px;
+    }
 
-        .navbar a:hover {
-            color: #ffffff;
-        }
+    h2 {
+      text-align: center;
+      color: #f39c12;
+      margin-bottom: 25px;
+      font-size: 24px;
+    }
 
-        /* Form Section */
-        .form-container {
-            width: 100%;
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #333333;
-            border-radius: 8px;
-        }
+    .input-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .form-container h2 {
-            color: #f39c12;
-            text-align: center;
-        }
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      margin-top: 8px;
+      outline: none;
+      transition: border-color 0.3s ease;
+      background-color: #444444;
+      color: #ffffff;
+    }
 
-        .form-container input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            background-color: #444444;
-            color: #ffffff;
-        }
+    input:focus {
+      border-color: #f39c12;
+    }
 
-        .form-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #f39c12;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.2em;
-            transition: background-color 0.3s;
-        }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #f39c12;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
 
-        .form-container button:hover {
-            background-color: #ffffff;
-            color: #f39c12;
-        }
+    .btn:hover {
+      background-color: #ffffff;
+      color: #f39c12;
+    }
 
-        /* Footer */
-        footer {
-            background-color: #333333;
-            padding: 15px;
-            text-align: center;
-            color: #ffffff;
-        }
+    .link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
 
-        footer a {
-            color: #f39c12;
-            text-decoration: none;
-        }
+    .link a {
+      color: #f39c12;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-    </style>
+    .link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 500px) {
+      .container {
+        padding: 25px;
+        max-width: 100%;
+      }
+      h2 {
+        font-size: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Navigation Bar -->
-    <div class="navbar">
-        <div>
-            <a href="index.html">Home</a>
-            <a href="movies.html">Movies</a>
-            <a href="cartoons.html">Cartoons</a>
-            <a href="dramas.html">Dramas</a>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="contact.html">Contact Us</a>
-        </div>
+  <div class="container">
+    <h2>Create Account</h2>
+
+    <!-- Registration Form -->
+    <form id="registerForm">
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Username" required />
+      </div>
+
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Email" required />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Password" required />
+      </div>
+
+      <div class="input-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+      </div>
+
+      <button type="submit" class="btn">Register</button>
+    </form>
+
+    <div class="link">
+      <p>Already have an account? <a href="login.html">Login here</a></p>
     </div>
+  </div>
 
-    <!-- Registration Form Section -->
-    <div class="form-container">
-        <h2>Create an Account</h2>
-        <form id="registerForm">
-            <input type="email" id="email" placeholder="Enter your email" required>
-            <input type="password" id="password" placeholder="Enter your password" required>
-            <button type="submit">Register</button>
-        </form>
-    </div>
+  <!-- Firebase Initialization Script -->
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
+      authDomain: "streamandearn.firebaseapp.com",
+      projectId: "streamandearn",
+      storageBucket: "streamandearn.appspot.com",
+      messagingSenderId: "276919948850",
+      appId: "1:276919948850:web:1dc74994262b2ef9e54e2b"
+    };
 
-    <!-- Footer Section -->
-    <footer>
-        <p>
-            Already have an account? <a href="login.html">Login</a>
-        </p>
-    </footer>
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-    <script>
-      const registerForm = document.getElementById("registerForm");
+    // Handle registration form submission
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+      event.preventDefault();
 
-      registerForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
 
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+      // Validate password match
+      if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
 
-        // Firebase Registration
-        auth.createUserWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-            // Successfully registered
-            const user = userCredential.user;
-            alert("Registration successful!");
-            window.location.href = "login.html"; // Redirect to login page after successful registration
-          })
-          .catch((error) => {
-            const errorMessage = error.message;
-            alert("Error: " + errorMessage);
-          });
-      });
-    </script>
+      // Register the user with Firebase Authentication
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // User successfully created
+          const user = userCredential.user;
+          alert('Account created successfully! Please log in.');
+
+          // Redirect to login page
+          window.location.href = 'login.html';
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          alert("Error: " + errorMessage);
+        });
+    });
+  </script>
 
 </body>
 </html>
-
