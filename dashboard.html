@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"></script>
-
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
@@ -81,26 +80,23 @@
 
     <!-- Dashboard Container -->
     <div class="container">
-        <!-- Account Details Section -->
         <div class="section">
             <h2>Account Details</h2>
-            <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
-            <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
-            <p><strong>Membership:</strong> <span id="membership">Loading...</span></p>
+            <p><strong>Name:</strong> <span id="userName">Loading...</span></p>
+            <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
+            <p><strong>Membership:</strong> <span id="userMembership">Loading...</span></p>
         </div>
 
-        <!-- Earned Rewards Section -->
         <div class="section">
             <h2>Earned Rewards</h2>
-            <p><strong>Total Earnings:</strong> $0.00</p>
-            <p><strong>Available for Withdrawal:</strong> $0.00</p>
+            <p><strong>Total Earnings:</strong> <span id="totalEarnings">$0.00</span></p>
+            <p><strong>Available for Withdrawal:</strong> <span id="availableForWithdrawal">$0.00</span></p>
             <a href="withdraw.html" class="button">Withdraw Earnings</a>
         </div>
 
-        <!-- Uploaded Content Section -->
         <div class="section">
             <h2>Uploaded Content</h2>
-            <p>You have uploaded [X] items.</p>
+            <p id="uploadedContent">You have uploaded [X] items.</p>
             <p><a href="upload.html" class="button">Upload New Content</a></p>
         </div>
     </div>
@@ -109,12 +105,12 @@
     <script>
         // Firebase Configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
-            authDomain: "streamandearn.firebaseapp.com",
-            projectId: "streamandearn",
-            storageBucket: "streamandearn.firebasestorage.app",
-            messagingSenderId: "276919948850",
-            appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
+          apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
+          authDomain: "streamandearn.firebaseapp.com",
+          projectId: "streamandearn",
+          storageBucket: "streamandearn.firebasestorage.app",
+          messagingSenderId: "276919948850",
+          appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
         };
 
         // Initialize Firebase
@@ -122,20 +118,43 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Get user information and display it
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // Display user info
-                document.getElementById('user-name').textContent = user.displayName || 'No name set';
-                document.getElementById('user-email').textContent = user.email || 'No email set';
-                document.getElementById('membership').textContent = 'Premium';  // Static membership status for now
+        // Get current user
+        const user = auth.currentUser;
 
-                // Optionally, you can fetch user-specific data from Firestore if needed
-            } else {
-                // If not logged in, redirect to login page
-                window.location.href = 'login.html';
-            }
-        });
+        // Check if user is logged in
+        if (user) {
+            // Update Account Details
+            document.getElementById("userName").textContent = user.displayName || "Not Provided";
+            document.getElementById("userEmail").textContent = user.email;
+
+            // Fetch additional user data from Firestore (Example: Membership status)
+            const userDocRef = db.collection("users").doc(user.uid);
+            userDocRef.get().then((doc) => {
+                if (doc.exists) {
+                    document.getElementById("userMembership").textContent = doc.data().membership || "Basic";
+                } else {
+                    console.log("No such document!");
+                }
+            });
+
+            // Fetch Earnings (Example)
+            const earningsRef = db.collection("earnings").doc(user.uid);
+            earningsRef.get().then((doc) => {
+                if (doc.exists) {
+                    document.getElementById("totalEarnings").textContent = `$${doc.data().total || 0.00}`;
+                    document.getElementById("availableForWithdrawal").textContent = `$${doc.data().available || 0.00}`;
+                }
+            });
+
+            // Fetch Uploaded Content (Example)
+            const uploadedRef = db.collection("content").where("userId", "==", user.uid);
+            uploadedRef.get().then((querySnapshot) => {
+                document.getElementById("uploadedContent").textContent = `You have uploaded ${querySnapshot.size} items.`;
+            });
+        } else {
+            // If user is not logged in, redirect to login page
+            window.location.href = "login.html";
+        }
     </script>
 
 </body>
