@@ -4,64 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #1a1a1a;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .form-container {
-      background-color: #333333;
-      padding: 20px;
-      border-radius: 8px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-    .form-container h1 {
-      color: #f39c12;
-      text-align: center;
-    }
-    .form-container input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
-      background-color: #444444;
-      color: #ffffff;
-    }
-    .form-container button {
-      width: 100%;
-      padding: 10px;
-      background-color: #f39c12;
-      color: #ffffff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .form-container button:hover {
-      background-color: #ffffff;
-      color: #f39c12;
-    }
-    .form-container p {
-      text-align: center;
-      margin-top: 15px;
-    }
-    .form-container a {
-      color: #f39c12;
-      text-decoration: none;
-    }
-  </style>
-  <!-- Firebase Compatibility Libraries -->
-  <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"></script>
+</head>
+<body>
+  <h1>Login</h1>
+  <form id="login-form">
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" required>
+    <br>
+    <button type="submit">Login</button>
+  </form>
+  <p id="message"></p>
+
   <script>
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4YH-vuGHtBLFs",
       authDomain: "streamandearn.firebaseapp.com",
@@ -72,34 +32,22 @@
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-  </script>
-</head>
-<body>
-  <div class="form-container">
-    <h1>Login</h1>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Enter Email" required>
-      <input type="password" id="password" placeholder="Enter Password" required>
-      <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="register.html">Register</a></p>
-  </div>
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Login form submission
+    document.getElementById('login-form').addEventListener('submit', (e) => {
       e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
 
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      try {
-        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
-        alert("Login successful!");
-        window.location.href = "index.html";
-      } catch (error) {
-        console.error(error.message);
-        alert("Error: " + error.message);
-      }
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          document.getElementById('message').innerText = "Login successful!";
+        })
+        .catch((error) => {
+          document.getElementById('message').innerText = "Error: " + error.message;
+        });
     });
   </script>
 </body>
