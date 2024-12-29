@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Stream & Earn</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -104,6 +107,21 @@
     </div>
 
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
+            authDomain: "streamandearn.firebaseapp.com",
+            projectId: "streamandearn",
+            storageBucket: "streamandearn.firebasestorage.app",
+            messagingSenderId: "276919948850",
+            appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const firestore = firebase.firestore();
+
         document.getElementById('registerForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent the form from refreshing the page
 
@@ -119,19 +137,28 @@
                 return;
             }
 
-            // Store user details in local storage
-            const user = {
-                username: username,
-                email: email,
-                password: password // In a real app, never store passwords like this
-            };
+            // Firebase Authentication register user
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
 
-            localStorage.setItem(email, JSON.stringify(user));
-            alert('Registration successful! You can now log in.');
+                    // Store user info in Firebase Firestore (optional, for example purposes)
+                    firestore.collection("users").doc(user.uid).set({
+                        username: username,
+                        email: email
+                    }).then(() => {
+                        alert('Registration successful! You can now log in.');
+                        window.location.href = 'login.html'; // Redirect to login page
+                    });
 
-            // Redirect to login page
-            window.location.href = 'login.html';
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    alert("Error: " + errorMessage);
+                });
         });
     </script>
 </body>
 </html>
+
