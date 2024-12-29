@@ -8,6 +8,7 @@
   <!-- Firebase SDK v8.x.x -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -22,8 +23,8 @@
 
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: #1a1a1a;
-      color: #ffffff;
+      background-color: #f1f5f9;
+      color: #333;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -31,7 +32,7 @@
     }
 
     .container {
-      background: #333333;
+      background: #fff;
       padding: 40px;
       border-radius: 10px;
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
@@ -41,7 +42,7 @@
 
     h2 {
       text-align: center;
-      color: #f39c12;
+      color: #007bff;
       margin-bottom: 25px;
       font-size: 24px;
     }
@@ -61,18 +62,16 @@
       margin-top: 8px;
       outline: none;
       transition: border-color 0.3s ease;
-      background-color: #444444;
-      color: #ffffff;
     }
 
     input:focus {
-      border-color: #f39c12;
+      border-color: #007bff;
     }
 
     .btn {
       width: 100%;
       padding: 12px;
-      background-color: #f39c12;
+      background-color: #007bff;
       color: white;
       font-size: 16px;
       border: none;
@@ -83,8 +82,7 @@
     }
 
     .btn:hover {
-      background-color: #ffffff;
-      color: #f39c12;
+      background-color: #0056b3;
     }
 
     .link {
@@ -94,7 +92,7 @@
     }
 
     .link a {
-      color: #f39c12;
+      color: #007bff;
       text-decoration: none;
       font-weight: bold;
     }
@@ -165,6 +163,7 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+    const firestore = firebase.firestore();
 
     // Handle registration form submission
     document.getElementById('registerForm').addEventListener('submit', function(event) {
@@ -184,15 +183,25 @@
       // Register the user with Firebase Authentication
       auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          // User successfully created
           const user = userCredential.user;
-          alert('Account created successfully! Please log in.');
 
-          // Redirect to login page
-          window.location.href = 'login.html';
+          // Store user data in Firestore
+          firestore.collection('users').doc(user.uid).set({
+            username: username,
+            email: email
+          })
+          .then(() => {
+            // Data saved to Firestore
+            alert('Account created successfully! Please log in.');
+
+            // Redirect to login page
+            window.location.href = 'login.html';
+          })
+          .catch((error) => {
+            console.error('Error saving user data: ', error);
+          });
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
           alert("Error: " + errorMessage);
         });
