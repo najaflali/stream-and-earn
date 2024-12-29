@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream & Earn - Dashboard</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #333333;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #f39c12;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.2em;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: #ffffff;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: #444444;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #f39c12;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            margin: 20px;
+            padding: 20px;
+            background-color: #333333;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            color: #f39c12;
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            color: #dddddd;
+        }
+
+        .action-button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 10px;
+            font-size: 1em;
+            color: #ffffff;
+            background-color: #f39c12;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .action-button:hover {
+            background-color: #ffffff;
+            color: #f39c12;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div>
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="movies.html">Movies</a>
+            <a href="cartoons.html">Cartoons</a>
+            <a href="dramas.html">Dramas</a>
+        </div>
+        <button id="logoutButton" class="action-button">Logout</button>
+    </div>
+
+    <!-- Header Section -->
+    <div class="header">
+        <h1>User Dashboard</h1>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <div class="section" id="account-details">
+            <h2>Account Details</h2>
+            <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
+        </div>
+        <div class="section" id="earnings">
+            <h2>Earnings</h2>
+            <p><strong>Total Earned:</strong> $<span id="total-earnings">0.00</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Logout functionality
+        const logoutButton = document.getElementById("logoutButton");
+
+        logoutButton.addEventListener("click", function () {
+            // Clear user login data
+            localStorage.removeItem("isLoggedIn");
+            window.location.href = "login.html";
+        });
+
+        // Example: Fetch and display user details (replace with Firebase logic later)
+        document.getElementById("user-email").textContent = "user@example.com";
+        document.getElementById("total-earnings").textContent = "50.00";
+    </script>
+</body>
+</html>
