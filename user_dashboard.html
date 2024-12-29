@@ -5,87 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard - StreamAndEarn</title>
 
-  <!-- Firebase SDK v8.x.x -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
+  
   <style>
-    /* Global Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #f1f5f9;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      background: #fff;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 480px;
-    }
-
-    h2 {
-      text-align: center;
-      color: #007bff;
-      margin-bottom: 25px;
-      font-size: 24px;
-    }
-
-    .info {
-      margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      background-color: #007bff;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin-top: 10px;
-    }
-
-    .btn:hover {
-      background-color: #0056b3;
-    }
-
-    .link {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-
-    .link a {
-      color: #007bff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .link a:hover {
-      text-decoration: underline;
-    }
-
+    /* Styling for the dashboard */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Roboto', sans-serif; background-color: #f1f5f9; color: #333; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .container { background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); width: 100%; max-width: 480px; }
+    h2 { text-align: center; color: #007bff; margin-bottom: 25px; font-size: 24px; }
+    .info { margin-bottom: 20px; display: flex; flex-direction: column; }
+    .btn { width: 100%; padding: 12px; background-color: #007bff; color: white; font-size: 16px; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease; margin-top: 10px; }
+    .btn:hover { background-color: #0056b3; }
   </style>
 </head>
 <body>
@@ -93,8 +28,8 @@
   <div class="container">
     <h2>User Dashboard</h2>
 
-    <!-- Profile Info -->
-    <div class="info" id="profileInfo">
+    <!-- User Profile Information -->
+    <div class="info">
       <p><strong>Username:</strong> <span id="username"></span></p>
       <p><strong>Email:</strong> <span id="email"></span></p>
     </div>
@@ -117,7 +52,7 @@
 
   <!-- Firebase Initialization Script -->
   <script>
-    // Firebase configuration
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
       authDomain: "streamandearn.firebaseapp.com",
@@ -132,18 +67,18 @@
     const auth = firebase.auth();
     const firestore = firebase.firestore();
 
-    // Get current user info
+    // Check if the user is logged in
     auth.onAuthStateChanged(user => {
       if (user) {
         document.getElementById('username').textContent = user.displayName || user.email;
         document.getElementById('email').textContent = user.email;
-        loadEarnings(user.uid);
+        loadEarnings(user.uid); // Load earnings from Firestore
       } else {
-        window.location.href = 'login.html';
+        window.location.href = 'login.html'; // Redirect if not logged in
       }
     });
 
-    // Load earnings for the user from Firestore
+    // Load the total earnings from Firestore
     function loadEarnings(userId) {
       firestore.collection('earnings').doc(userId).get()
         .then(doc => {
@@ -156,7 +91,7 @@
         });
     }
 
-    // Upload content
+    // Handle content upload
     document.getElementById('uploadBtn').addEventListener('click', function() {
       const contentFile = document.getElementById('contentUpload').files[0];
       if (!contentFile) {
@@ -164,22 +99,20 @@
         return;
       }
 
-      // Upload the file to Firebase Storage
       const storageRef = firebase.storage().ref();
       const contentRef = storageRef.child('content/' + contentFile.name);
 
       contentRef.put(contentFile).then((snapshot) => {
         alert('Content uploaded successfully!');
-        // Optionally, you could store content details in Firestore for tracking
       }).catch(error => {
         alert('Error uploading content: ' + error.message);
       });
     });
 
-    // Logout function
+    // Handle logout
     document.getElementById('logoutBtn').addEventListener('click', function() {
       auth.signOut().then(() => {
-        window.location.href = 'login.html';
+        window.location.href = 'login.html'; // Redirect after logout
       }).catch(error => {
         alert('Error logging out: ' + error.message);
       });
