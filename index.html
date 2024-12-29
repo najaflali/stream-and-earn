@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-  // Your Firebase config object
-  const firebaseConfig = {
-    apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
-    authDomain: "streamandearn.firebaseapp.com",
-    projectId: "streamandearn",
-    storageBucket: "streamandearn.appspot.com",
-    messagingSenderId: "276919948850",
-    appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
-  };
+    <!-- Add Firebase SDKs before your own scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"></script>
 
-  // Initialize Firebase
-  const app = firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const firestore = firebase.firestore();
-</script>
+    <script>
+      // Your Firebase config object
+      const firebaseConfig = {
+        apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
+        authDomain: "streamandearn.firebaseapp.com",
+        projectId: "streamandearn",
+        storageBucket: "streamandearn.appspot.com",
+        messagingSenderId: "276919948850",
+        appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
+      };
+
+      // Initialize Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const firestore = firebase.firestore();
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stream & Earn - Home</title>
@@ -162,19 +168,19 @@
 
     <!-- Navigation Bar -->
     <div class="navbar">
-    <div>
-        <a href="index.html">Home</a>
-        <a href="movies.html">Movies</a>
-        <a href="cartoons.html">Cartoons</a>
-        <a href="dramas.html">Dramas</a>
-        <a href="dashboard.html">Dashboard</a> <!-- Link to Dashboard -->
-        <a href="contact.html">Contact Us</a>
+        <div>
+            <a href="index.html">Home</a>
+            <a href="movies.html">Movies</a>
+            <a href="cartoons.html">Cartoons</a>
+            <a href="dramas.html">Dramas</a>
+            <a href="dashboard.html">Dashboard</a> <!-- Link to Dashboard -->
+            <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <button>Search</button>
+        </div>
     </div>
-    <div class="search-bar">
-        <input type="text" placeholder="Search...">
-        <button>Search</button>
-    </div>
-</div>
 
     <!-- Header Section -->
     <div class="header">
@@ -227,6 +233,7 @@
 
 </body>
 </html>
+
 <script>
     // Check if the user is logged in
     const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -236,6 +243,7 @@
         window.location.href = "login.html"; // Redirect to login page
     }
 </script>
+
 <button id="logoutButton">Logout</button>
 
 <script>
