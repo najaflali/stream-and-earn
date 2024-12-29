@@ -163,7 +163,7 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    const firestore = firebase.firestore();
+    const db = firebase.firestore();
 
     // Handle registration form submission
     document.getElementById('registerForm').addEventListener('submit', function(event) {
@@ -183,25 +183,24 @@
       // Register the user with Firebase Authentication
       auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
+          // User successfully created
           const user = userCredential.user;
-
-          // Store user data in Firestore
-          firestore.collection('users').doc(user.uid).set({
+          
+          // Add the username and email to Firestore under the 'users' collection
+          db.collection("users").doc(user.uid).set({
             username: username,
             email: email
           })
           .then(() => {
-            // Data saved to Firestore
             alert('Account created successfully! Please log in.');
-
-            // Redirect to login page
-            window.location.href = 'login.html';
+            window.location.href = 'login.html';  // Redirect to login page
           })
           .catch((error) => {
-            console.error('Error saving user data: ', error);
+            alert("Error: " + error.message);
           });
         })
         .catch((error) => {
+          const errorCode = error.code;
           const errorMessage = error.message;
           alert("Error: " + errorMessage);
         });
