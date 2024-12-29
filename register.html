@@ -185,7 +185,7 @@
         .then((userCredential) => {
           // User successfully created
           const user = userCredential.user;
-          
+
           // Add the username and email to Firestore under the 'users' collection
           db.collection("users").doc(user.uid).set({
             username: username,
@@ -196,7 +196,7 @@
             window.location.href = 'login.html';  // Redirect to login page
           })
           .catch((error) => {
-            alert("Error: " + error.message);
+            alert("Error saving data: " + error.message);
           });
         })
         .catch((error) => {
