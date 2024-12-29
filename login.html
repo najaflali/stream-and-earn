@@ -3,58 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - Stream & Earn</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
+        authDomain: "streamandearn.firebaseapp.com",
+        projectId: "streamandearn",
+        storageBucket: "streamandearn.appspot.com",
+        messagingSenderId: "276919948850",
+        appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
+      };
+
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+    </script>
+
     <style>
-        /* Your styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #333333;
+            padding: 30px;
+            border-radius: 8px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            background-color: #444444;
+            color: #ffffff;
+        }
+
+        .login-container button {
+            padding: 10px 20px;
+            background-color: #f39c12;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #ffffff;
+            color: #f39c12;
+        }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h1>Login</h1>
+    <div class="login-container">
+        <h2 style="color: #f39c12;">Login to Stream & Earn</h2>
         <form id="loginForm">
-            <input type="email" id="email" placeholder="Enter Email" required>
-            <input type="password" id="password" placeholder="Enter Password" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
-        <p>Don't have an account? <a href="register.html">Register</a></p>
+        <p>Don't have an account? <a href="signup.html" style="color: #f39c12;">Sign up</a></p>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth-compat.js"></script>
-
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4YH-vuGHtBLFs",
-            authDomain: "streamandearn.firebaseapp.com",
-            projectId: "streamandearn",
-            storageBucket: "streamandearn.appspot.com",
-            messagingSenderId: "276919948850",
-            appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
         const loginForm = document.getElementById("loginForm");
 
-        loginForm.addEventListener("submit", function (e) {
-            e.preventDefault();
+        loginForm.addEventListener("submit", function(event) {
+            event.preventDefault();
 
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
-            // Firebase login
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    const user = userCredential.user;
-                    localStorage.setItem("isLoggedIn", email);
-                    alert("Login successful!");
-                    window.location.href = "index.html";
+                    // Successfully logged in
+                    localStorage.setItem("isLoggedIn", true);
+                    window.location.href = "index.html"; // Redirect to home page
                 })
                 .catch((error) => {
-                    alert("Error: " + error.message);
+                    alert(error.message);
                 });
         });
     </script>
