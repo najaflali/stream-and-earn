@@ -1,161 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1a1a1a;
-            color: #ffffff;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - StreamAndEarn</title>
 
-        .navbar {
-            background-color: #333333;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+  <!-- Firebase SDK v8.x.x -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-        .navbar a {
-            color: #f39c12;
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 1.2em;
-        }
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-        .container {
-            padding: 20px;
-        }
+  <style>
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .section {
-            background-color: #333333;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f1f5f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-        .section h2 {
-            color: #f39c12;
-        }
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 480px;
+    }
 
-        .section p {
-            color: #dddddd;
-        }
+    h2 {
+      text-align: center;
+      color: #007bff;
+      margin-bottom: 25px;
+      font-size: 24px;
+    }
 
-        .button {
-            background-color: #f39c12;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-        }
+    .info {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .button:hover {
-            background-color: #ffffff;
-            color: #f39c12;
-        }
-    </style>
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .link a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .link a:hover {
+      text-decoration: underline;
+    }
+
+  </style>
 </head>
 <body>
 
-    <!-- Navbar -->
-    <div class="navbar">
-        <a href="index.html">Home</a>
-        <a href="movies.html">Movies</a>
-        <a href="cartoons.html">Cartoons</a>
-        <a href="dramas.html">Dramas</a>
-        <a href="contact.html">Contact Us</a>
+  <div class="container">
+    <h2>User Dashboard</h2>
+
+    <!-- Profile Info -->
+    <div class="info" id="profileInfo">
+      <p><strong>Username:</strong> <span id="username"></span></p>
+      <p><strong>Email:</strong> <span id="email"></span></p>
     </div>
 
-    <!-- Dashboard Container -->
-    <div class="container">
-        <div class="section">
-            <h2>Account Details</h2>
-            <p><strong>Name:</strong> <span id="userName">Loading...</span></p>
-            <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
-            <p><strong>Membership:</strong> <span id="userMembership">Loading...</span></p>
-        </div>
-
-        <div class="section">
-            <h2>Earned Rewards</h2>
-            <p><strong>Total Earnings:</strong> <span id="totalEarnings">$0.00</span></p>
-            <p><strong>Available for Withdrawal:</strong> <span id="availableForWithdrawal">$0.00</span></p>
-            <a href="withdraw.html" class="button">Withdraw Earnings</a>
-        </div>
-
-        <div class="section">
-            <h2>Uploaded Content</h2>
-            <p id="uploadedContent">You have uploaded [X] items.</p>
-            <p><a href="upload.html" class="button">Upload New Content</a></p>
-        </div>
+    <!-- Earnings Info -->
+    <div class="info">
+      <p><strong>Total Earnings:</strong> <span id="earnings">$0.00</span></p>
     </div>
 
-    <!-- Firebase Script -->
-    <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
-          authDomain: "streamandearn.firebaseapp.com",
-          projectId: "streamandearn",
-          storageBucket: "streamandearn.firebasestorage.app",
-          messagingSenderId: "276919948850",
-          appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
-        };
+    <!-- Content Upload Section -->
+    <div class="info">
+      <h3>Upload Content</h3>
+      <input type="file" id="contentUpload" />
+      <button id="uploadBtn" class="btn">Upload</button>
+    </div>
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+    <!-- Logout Button -->
+    <button id="logoutBtn" class="btn">Logout</button>
+  </div>
 
-        // Get current user
-        const user = auth.currentUser;
+  <!-- Firebase Initialization Script -->
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
+      authDomain: "streamandearn.firebaseapp.com",
+      projectId: "streamandearn",
+      storageBucket: "streamandearn.appspot.com",
+      messagingSenderId: "276919948850",
+      appId: "1:276919948850:web:1dc74994262b2ef9e54e2b"
+    };
 
-        // Check if user is logged in
-        if (user) {
-            // Update Account Details
-            document.getElementById("userName").textContent = user.displayName || "Not Provided";
-            document.getElementById("userEmail").textContent = user.email;
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const firestore = firebase.firestore();
 
-            // Fetch additional user data from Firestore (Example: Membership status)
-            const userDocRef = db.collection("users").doc(user.uid);
-            userDocRef.get().then((doc) => {
-                if (doc.exists) {
-                    document.getElementById("userMembership").textContent = doc.data().membership || "Basic";
-                } else {
-                    console.log("No such document!");
-                }
-            });
+    // Get current user info
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        document.getElementById('username').textContent = user.displayName || user.email;
+        document.getElementById('email').textContent = user.email;
+        loadEarnings(user.uid);
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
 
-            // Fetch Earnings (Example)
-            const earningsRef = db.collection("earnings").doc(user.uid);
-            earningsRef.get().then((doc) => {
-                if (doc.exists) {
-                    document.getElementById("totalEarnings").textContent = `$${doc.data().total || 0.00}`;
-                    document.getElementById("availableForWithdrawal").textContent = `$${doc.data().available || 0.00}`;
-                }
-            });
+    // Load earnings for the user from Firestore
+    function loadEarnings(userId) {
+      firestore.collection('earnings').doc(userId).get()
+        .then(doc => {
+          if (doc.exists) {
+            document.getElementById('earnings').textContent = '$' + doc.data().total || '$0.00';
+          }
+        })
+        .catch(error => {
+          console.error("Error loading earnings: ", error);
+        });
+    }
 
-            // Fetch Uploaded Content (Example)
-            const uploadedRef = db.collection("content").where("userId", "==", user.uid);
-            uploadedRef.get().then((querySnapshot) => {
-                document.getElementById("uploadedContent").textContent = `You have uploaded ${querySnapshot.size} items.`;
-            });
-        } else {
-            // If user is not logged in, redirect to login page
-            window.location.href = "login.html";
-        }
-    </script>
+    // Upload content
+    document.getElementById('uploadBtn').addEventListener('click', function() {
+      const contentFile = document.getElementById('contentUpload').files[0];
+      if (!contentFile) {
+        alert('Please select a file to upload!');
+        return;
+      }
+
+      // Upload the file to Firebase Storage
+      const storageRef = firebase.storage().ref();
+      const contentRef = storageRef.child('content/' + contentFile.name);
+
+      contentRef.put(contentFile).then((snapshot) => {
+        alert('Content uploaded successfully!');
+        // Optionally, you could store content details in Firestore for tracking
+      }).catch(error => {
+        alert('Error uploading content: ' + error.message);
+      });
+    });
+
+    // Logout function
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      auth.signOut().then(() => {
+        window.location.href = 'login.html';
+      }).catch(error => {
+        alert('Error logging out: ' + error.message);
+      });
+    });
+  </script>
 
 </body>
 </html>
