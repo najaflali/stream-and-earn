@@ -85,6 +85,28 @@
       color: #f39c12;
     }
 
+    /* Navigation links */
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .nav-links a {
+      color: #f39c12;
+      text-decoration: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      margin: 0 10px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: #f39c12;
+      color: #ffffff;
+    }
+
     /* Responsive Design */
     @media (max-width: 500px) {
       .container {
@@ -101,6 +123,14 @@
 
   <div class="container">
     <h2>User Dashboard</h2>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+      <a href="profile.html">Profile</a>
+      <a href="upload.html">Upload Content</a>
+      <a href="earnings.html">Earnings</a>
+      <a href="settings.html">Settings</a>
+    </div>
 
     <!-- User Profile Information -->
     <div class="info">
