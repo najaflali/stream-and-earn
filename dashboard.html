@@ -55,36 +55,6 @@
       margin: 10px 0;
     }
 
-    input[type="file"] {
-      display: block;
-      margin-top: 10px;
-      color: #ffffff;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      background-color: #f39c12;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin-top: 10px;
-    }
-
-    .btn:hover {
-      background-color: #ffffff;
-      color: #f39c12;
-    }
-
-    .info h3 {
-      margin-top: 20px;
-      margin-bottom: 10px;
-      color: #f39c12;
-    }
-
     /* Navigation links */
     .nav-links {
       display: flex;
@@ -126,32 +96,16 @@
 
     <!-- Navigation Links -->
     <div class="nav-links">
-      <a href="profile.html">Profile</a>
-      <a href="upload.html">Upload Content</a>
-      <a href="earnings.html">Earnings</a>
-      <a href="settings.html">Settings</a>
-      <!-- Content Links -->
       <a href="movies.html">Movies</a>
       <a href="dramas.html">Dramas</a>
       <a href="cartoons.html">Cartoons</a>
     </div>
 
-    <!-- User Profile Information -->
+    <!-- User Info (Earnings and Username) -->
     <div class="info">
       <p><strong>Username:</strong> <span id="username"></span></p>
       <p><strong>Email:</strong> <span id="email"></span></p>
-    </div>
-
-    <!-- Earnings Info -->
-    <div class="info">
       <p><strong>Total Earnings:</strong> <span id="earnings">$0.00</span></p>
-    </div>
-
-    <!-- Content Upload Section -->
-    <div class="info">
-      <h3>Upload Content</h3>
-      <input type="file" id="contentUpload" />
-      <button id="uploadBtn" class="btn">Upload</button>
     </div>
 
     <!-- Logout Button -->
@@ -173,7 +127,6 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const firestore = firebase.firestore();
-    const storage = firebase.storage();
 
     // User logout
     document.getElementById('logoutBtn').addEventListener('click', function() {
@@ -194,21 +147,6 @@
         });
       } else {
         window.location.href = 'login.html';
-      }
-    });
-
-    // Content upload
-    document.getElementById('uploadBtn').addEventListener('click', function() {
-      const fileInput = document.getElementById('contentUpload');
-      const file = fileInput.files[0];
-
-      if (file) {
-        const storageRef = storage.ref().child('content/' + file.name);
-        storageRef.put(file).then(() => {
-          alert('Content uploaded successfully!');
-        }).catch(error => {
-          alert('Error uploading content: ' + error.message);
-        });
       }
     });
   </script>
