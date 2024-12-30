@@ -141,45 +141,41 @@
     const firestore = firebase.firestore();
     const storage = firebase.storage();
 
+    // User logout
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      auth.signOut()
+        .then(() => window.location.href = 'login.html')
+        .catch(error => alert('Error logging out: ' + error.message));
+    });
+
+    // Display user info
     auth.onAuthStateChanged(user => {
       if (user) {
-        document.getElementById('username').textContent = user.displayName || user.email;
+        document.getElementById('username').textContent = user.displayName || 'Anonymous';
         document.getElementById('email').textContent = user.email;
-        loadEarnings(user.uid);
+
+        firestore.collection('users').doc(user.uid).get().then(doc => {
+          const userData = doc.data();
+          document.getElementById('earnings').textContent = `$${userData.earnings || '0.00'}`;
+        });
       } else {
         window.location.href = 'login.html';
       }
     });
 
-    function loadEarnings(userId) {
-      firestore.collection('earnings').doc(userId).get()
-        .then(doc => {
-          if (doc.exists) {
-            document.getElementById('earnings').textContent = '$' + (doc.data().total || '0.00');
-          }
-        })
-        .catch(error => {
-          console.error("Error loading earnings: ", error);
-        });
-    }
-
+    // Content upload
     document.getElementById('uploadBtn').addEventListener('click', function() {
-      const contentFile = document.getElementById('contentUpload').files[0];
-      if (!contentFile) {
-        alert('Please select a file to upload!');
-        return;
+      const fileInput = document.getElementById('contentUpload');
+      const file = fileInput.files[0];
+
+      if (file) {
+        const storageRef = storage.ref().child('content/' + file.name);
+        storageRef.put(file).then(() => {
+          alert('Content uploaded successfully!');
+        }).catch(error => {
+          alert('Error uploading content: ' + error.message);
+        });
       }
-
-      const contentRef = storage.ref('content/' + contentFile.name);
-      contentRef.put(contentFile)
-        .then(() => alert('Content uploaded successfully!'))
-        .catch(error => alert('Error uploading content: ' + error.message));
-    });
-
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-      auth.signOut()
-        .then(() => window.location.href = 'login.html')
-        .catch(error => alert('Error logging out: ' + error.message));
     });
   </script>
 

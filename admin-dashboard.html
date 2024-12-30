@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - StreamAndEarn</title>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #1a1a1a;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #333333;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 900px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #f39c12;
+      margin-bottom: 25px;
+      font-size: 24px;
+    }
+
+    .table {
+      width: 100%;
+      margin-top: 20px;
+      color: #f39c12;
+    }
+
+    .table th, .table td {
+      padding: 12px;
+      text-align: center;
+    }
+
+    .btn {
+      background-color: #f39c12;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #ffffff;
+      color: #f39c12;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Admin Dashboard</h2>
+
+    <!-- User Management -->
+    <div>
+      <h3>Manage Users</h3>
+      <table class="table" id="userTable">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Total Earnings</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Content Management -->
+    <div>
+      <h3>Manage Content</h3>
+      <table class="table" id="contentTable">
+        <thead>
+          <tr>
+            <th>Content Title</th>
+            <th>Uploader</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Logout Button -->
+    <button id="logoutBtn" class="btn">Logout</button>
+  </div>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
+      authDomain: "streamandearn.firebaseapp.com",
+      projectId: "streamandearn",
+      storageBucket: "streamandearn.appspot.com",
+      messagingSenderId: "276919948850",
+      appId: "1:276919948850:web:1dc74994262b2ef9e54e2b"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const firestore = firebase.firestore();
+    const storage = firebase.storage();
+
+    // Admin logout function
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      auth.signOut()
+        .then(() => window.location.href = 'login.html')
+        .catch(error => alert('Error logging out: ' + error.message));
+    });
+
+    // Load users data
+    function loadUsers() {
+      firestore.collection('users').get().then(snapshot => {
+        let tableBody = document.querySelector('#userTable tbody');
+        tableBody.innerHTML = ''; // Clear existing rows
+        snapshot.forEach(doc => {
+          let user = doc.data();
+          let row = `<tr>
+                      <td>${user.username}</td>
+                      <td>${user.email}</td>
+                      <td>${user.earnings || '$0.00'}</td>
+                      <td><button class="btn" onclick="editUser('${doc.id}')">Edit</button></td>
+                    </tr>`;
+          tableBody.innerHTML += row;
+        });
+      }).catch(error => {
+        console.error("Error loading users: ", error);
+      });
+    }
+
+    // Load content data
+    function loadContent() {
+      firestore.collection('content').get().then(snapshot => {
+        let tableBody = document.querySelector('#contentTable tbody');
+        tableBody.innerHTML = ''; // Clear existing rows
+        snapshot.forEach(doc => {
+          let content = doc.data();
+          let row = `<tr>
+                      <td>${content.title}</td>
+                      <td>${content.uploader}</td>
+                      <td>${content.status}</td>
+                      <td><button class="btn" onclick="approveContent('${doc.id}')">Approve</button></td>
+                    </tr>`;
+          tableBody.innerHTML += row;
+        });
+      }).catch(error => {
+        console.error("Error loading content: ", error);
+      });
+    }
+
+    // Approve content function
+    function approveContent(contentId) {
+      firestore.collection('content').doc(contentId).update({
+        status: 'Approved'
+      }).then(() => {
+        loadContent(); // Reload content data
+        alert('Content approved!');
+      }).catch(error => {
+        alert('Error approving content: ' + error.message);
+      });
+    }
+
+    // Load initial data
+    loadUsers();
+    loadContent();
+  </script>
+
+</body>
+</html>
