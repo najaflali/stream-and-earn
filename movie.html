@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="script.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watch Movie</title>
+    <title>Watch Movie - Stream & Earn</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,84 +32,140 @@
             color: #ffffff;
         }
 
-        .movie-container {
+        .header {
             text-align: center;
-            margin: 50px 20px;
+            padding: 50px 20px;
+            background-color: #444444;
         }
-        .movie-title {
-            font-size: 2em;
-            margin-bottom: 20px;
+        .header h1 {
+            margin: 0;
+            font-size: 2.8em;
             color: #f39c12;
         }
-        video {
-            width: 80%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .earnings-info {
+        .header p {
             font-size: 1.2em;
-            margin-top: 20px;
             color: #dddddd;
         }
 
-        footer {
-            background-color: #333333;
-            padding: 15px;
-            text-align: center;
-            color: #ffffff;
-        }
-        footer a {
-            color: #f39c12;
-            text-decoration: none;
-        }
-    </style>
-    <script>
-        // Function to extract query parameters
-        function getQueryParams() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                title: params.get('title'),
-                video: params.get('video')
-            };
+        .movie-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
         }
 
-        // Function to dynamically set movie details
-        function loadMovie() {
-            const { title, video } = getQueryParams();
-            document.getElementById('movie-title').textContent = title || 'Unknown Movie';
-            document.getElementById('movie-player').src = video || '';
+        .movie-container video {
+            width: 80%;
+            max-width: 900px;
+            border-radius: 10px;
         }
-    </script>
+
+        .earn-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f39c12;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        .earn-button:hover {
+            background-color: #ffffff;
+            color: #f39c12;
+        }
+    </style>
 </head>
-<body onload="loadMovie()">
+<body>
 
     <!-- Navigation Bar -->
     <div class="navbar">
-        <div>
-            <a href="index.html">Home</a>
-            <a href="movies.html">Movies</a>
-            <a href="cartoons.html">Cartoons</a>
-            <a href="dramas.html">Dramas</a>
-        </div>
+        <a href="index.html">Home</a>
+        <a href="movies.html">Movies</a>
+        <a href="cartoons.html">Cartoons</a>
+        <a href="dramas.html">Dramas</a>
     </div>
 
-    <!-- Movie Section -->
+    <!-- Header Section -->
+    <div class="header">
+        <h1 id="movieTitle">Loading Movie...</h1>
+        <p>Enjoy watching and earn rewards!</p>
+    </div>
+
+    <!-- Movie Container -->
     <div class="movie-container">
-        <h1 id="movie-title" class="movie-title">Loading Movie...</h1>
-        <video id="movie-player" controls autoplay>
+        <!-- Video Player -->
+        <video id="moviePlayer" controls>
             Your browser does not support the video tag.
         </video>
-        <p class="earnings-info">Earn by watching this movie! Stay tuned for more rewards.</p>
+
+        <!-- Earnings Button -->
+        <button class="earn-button" id="earnButton" style="display: none;">Earn & Withdraw</button>
     </div>
 
-    <footer>
+    <footer style="background-color: #333333; padding: 15px; text-align: center; color: #ffffff;">
         <p>
-            <a href="privacy.html">Privacy Policy</a> |
-            <a href="terms.html">Terms of Service</a>
+            <a href="privacy.html" style="color: #f39c12; text-decoration: none;">Privacy Policy</a> |
+            <a href="terms.html" style="color: #f39c12; text-decoration: none;">Terms of Service</a>
         </p>
     </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    
+    <script>
+        // Firebase Configuration and Initialization
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const auth = firebase.auth();
+
+        // Get movie details from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const movieTitle = urlParams.get('title');
+        const videoUrl = urlParams.get('video');
+
+        // Set movie title and video source
+        document.getElementById('movieTitle').textContent = movieTitle;
+        const moviePlayer = document.getElementById('moviePlayer');
+        moviePlayer.src = videoUrl;
+
+        // Show "Earn & Withdraw" button when video is ready to watch
+        moviePlayer.oncanplay = function() {
+            document.getElementById('earnButton').style.display = 'inline-block';
+        };
+
+        // Earn and update earnings function
+        document.getElementById('earnButton').addEventListener('click', function() {
+            const user = auth.currentUser;
+            if (user) {
+                const userRef = db.ref('users/' + user.uid);
+
+                userRef.once('value').then(function(snapshot) {
+                    const currentEarnings = snapshot.val().earnings || 0;
+                    userRef.update({
+                        earnings: currentEarnings + 0.03 // Update earnings by 0.03 (example)
+                    });
+
+                    // Optionally, show an alert to the user
+                    alert('Earnings updated! You have earned 0.03 for watching this movie.');
+                });
+            } else {
+                alert('You must be logged in to earn.');
+            }
+        });
+    </script>
 
 </body>
 </html>

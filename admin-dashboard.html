@@ -1,201 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - StreamAndEarn</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Stream and Earn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+        }
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+        .navbar {
+            background-color: #007bff;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
 
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        .navbar h1 {
+            margin: 0;
+        }
 
-  <style>
-    /* Global Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        .sidebar {
+            background-color: #343a40;
+            color: white;
+            padding-top: 20px;
+            height: 100vh;
+            width: 220px;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
 
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #1a1a1a;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            display: block;
+            font-size: 18px;
+        }
 
-    .container {
-      background: #333333;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 900px;
-    }
+        .sidebar a:hover {
+            background-color: #007bff;
+        }
 
-    h2 {
-      text-align: center;
-      color: #f39c12;
-      margin-bottom: 25px;
-      font-size: 24px;
-    }
+        .content {
+            margin-left: 240px;
+            padding: 20px;
+        }
 
-    .table {
-      width: 100%;
-      margin-top: 20px;
-      color: #f39c12;
-    }
+        .dashboard-card {
+            background-color: white;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
 
-    .table th, .table td {
-      padding: 12px;
-      text-align: center;
-    }
+        .card-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
 
-    .btn {
-      background-color: #f39c12;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      padding: 10px;
-      transition: background-color 0.3s ease;
-    }
+        .card-content {
+            font-size: 18px;
+        }
 
-    .btn:hover {
-      background-color: #ffffff;
-      color: #f39c12;
-    }
-  </style>
+        footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .loading {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
 </head>
+
 <body>
-
-  <div class="container">
-    <h2>Admin Dashboard</h2>
-
-    <!-- User Management -->
-    <div>
-      <h3>Manage Users</h3>
-      <table class="table" id="userTable">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Total Earnings</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <div class="navbar">
+        <h1>Admin Dashboard</h1>
     </div>
 
-    <!-- Content Management -->
-    <div>
-      <h3>Manage Content</h3>
-      <table class="table" id="contentTable">
-        <thead>
-          <tr>
-            <th>Content Title</th>
-            <th>Uploader</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <div class="sidebar">
+        <a href="#">Dashboard</a>
+        <a href="#">Manage Users</a>
+        <a href="#">Manage Content</a>
+        <a href="#">Ad Settings</a>
+        <a href="#">Earnings</a>
+        <a href="#">Settings</a>
     </div>
 
-    <!-- Logout Button -->
-    <button id="logoutBtn" class="btn">Logout</button>
-  </div>
+    <div class="content">
+        <h2>Overview</h2>
+        <div class="dashboard-card">
+            <div class="card-title">Total Users</div>
+            <div class="card-content" id="userCount">Loading...</div>
+        </div>
+        <div class="dashboard-card">
+            <div class="card-title">Total Content</div>
+            <div class="card-content" id="contentCount">Loading...</div>
+        </div>
+        <div class="dashboard-card">
+            <div class="card-title">Total Earnings</div>
+            <div class="card-content" id="totalEarnings">Loading...</div>
+        </div>
+    </div>
 
-  <script>
-    // Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
-      authDomain: "streamandearn.firebaseapp.com",
-      projectId: "streamandearn",
-      storageBucket: "streamandearn.appspot.com",
-      messagingSenderId: "276919948850",
-      appId: "1:276919948850:web:1dc74994262b2ef9e54e2b"
-    };
+    <footer>
+        <p>© 2024 StreamAndEarn. All rights reserved.</p>
+    </footer>
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const firestore = firebase.firestore();
-    const storage = firebase.storage();
+    <!-- Firebase Configuration & Initialization -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDj43pdPs0Yo5NpTJFQju4nrOjm6mYgNQU",
+            authDomain: "streamandearn1.firebaseapp.com",
+            databaseURL: "https://streamandearn1-default-rtdb.firebaseio.com",
+            projectId: "streamandearn1",
+            storageBucket: "streamandearn1.firebasestorage.app",
+            messagingSenderId: "824833347843",
+            appId: "1:824833347843:web:cddd5b23134a641d941936"
+        };
 
-    // Admin logout function
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-      auth.signOut()
-        .then(() => window.location.href = 'login.html')
-        .catch(error => alert('Error logging out: ' + error.message));
-    });
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
 
-    // Load users data
-    function loadUsers() {
-      firestore.collection('users').get().then(snapshot => {
-        let tableBody = document.querySelector('#userTable tbody');
-        tableBody.innerHTML = ''; // Clear existing rows
-        snapshot.forEach(doc => {
-          let user = doc.data();
-          let row = `<tr>
-                      <td>${user.username}</td>
-                      <td>${user.email}</td>
-                      <td>${user.earnings || '$0.00'}</td>
-                      <td><button class="btn" onclick="editUser('${doc.id}')">Edit</button></td>
-                    </tr>`;
-          tableBody.innerHTML += row;
-        });
-      }).catch(error => {
-        console.error("Error loading users: ", error);
-      });
-    }
+        // Fetch Data for Dashboard
+        function fetchDashboardData() {
+            // Get Total Users
+            db.collection('users').get().then(snapshot => {
+                document.getElementById('userCount').textContent = snapshot.size;
+            }).catch(error => {
+                console.error("Error fetching user data: ", error);
+            });
 
-    // Load content data
-    function loadContent() {
-      firestore.collection('content').get().then(snapshot => {
-        let tableBody = document.querySelector('#contentTable tbody');
-        tableBody.innerHTML = ''; // Clear existing rows
-        snapshot.forEach(doc => {
-          let content = doc.data();
-          let row = `<tr>
-                      <td>${content.title}</td>
-                      <td>${content.uploader}</td>
-                      <td>${content.status}</td>
-                      <td><button class="btn" onclick="approveContent('${doc.id}')">Approve</button></td>
-                    </tr>`;
-          tableBody.innerHTML += row;
-        });
-      }).catch(error => {
-        console.error("Error loading content: ", error);
-      });
-    }
+            // Get Total Content
+            db.collection('content').get().then(snapshot => {
+                document.getElementById('contentCount').textContent = snapshot.size;
+            }).catch(error => {
+                console.error("Error fetching content data: ", error);
+            });
 
-    // Approve content function
-    function approveContent(contentId) {
-      firestore.collection('content').doc(contentId).update({
-        status: 'Approved'
-      }).then(() => {
-        loadContent(); // Reload content data
-        alert('Content approved!');
-      }).catch(error => {
-        alert('Error approving content: ' + error.message);
-      });
-    }
+            // Get Total Earnings (You can customize this logic based on your app's data structure)
+            db.collection('earnings').get().then(snapshot => {
+                let total = 0;
+                snapshot.forEach(doc => {
+                    total += doc.data().amount;
+                });
+                document.getElementById('totalEarnings').textContent = `$${total}`;
+            }).catch(error => {
+                console.error("Error fetching earnings data: ", error);
+            });
+        }
 
-    // Load initial data
-    loadUsers();
-    loadContent();
-  </script>
-
+        // Call the function on load
+        window.onload = fetchDashboardData;
+    </script>
 </body>
+
 </html>

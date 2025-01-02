@@ -8,13 +8,10 @@
   <!-- Firebase SDK v8.x.x -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Global Reset */
     * {
       margin: 0;
       padding: 0;
@@ -23,8 +20,8 @@
 
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: #f1f5f9;
-      color: #333;
+      background-color: #1a1a1a;
+      color: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -32,7 +29,7 @@
     }
 
     .container {
-      background: #fff;
+      background: #333333;
       padding: 40px;
       border-radius: 10px;
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
@@ -42,7 +39,7 @@
 
     h2 {
       text-align: center;
-      color: #007bff;
+      color: #f39c12;
       margin-bottom: 25px;
       font-size: 24px;
     }
@@ -62,16 +59,18 @@
       margin-top: 8px;
       outline: none;
       transition: border-color 0.3s ease;
+      background-color: #444444;
+      color: #ffffff;
     }
 
     input:focus {
-      border-color: #007bff;
+      border-color: #f39c12;
     }
 
     .btn {
       width: 100%;
       padding: 12px;
-      background-color: #007bff;
+      background-color: #f39c12;
       color: white;
       font-size: 16px;
       border: none;
@@ -82,7 +81,8 @@
     }
 
     .btn:hover {
-      background-color: #0056b3;
+      background-color: #ffffff;
+      color: #f39c12;
     }
 
     .link {
@@ -92,7 +92,7 @@
     }
 
     .link a {
-      color: #007bff;
+      color: #f39c12;
       text-decoration: none;
       font-weight: bold;
     }
@@ -101,7 +101,6 @@
       text-decoration: underline;
     }
 
-    /* Responsive Design */
     @media (max-width: 500px) {
       .container {
         padding: 25px;
@@ -116,15 +115,9 @@
 <body>
 
   <div class="container">
-    <h2>Create Account</h2>
+    <h2>Register</h2>
 
-    <!-- Registration Form -->
     <form id="registerForm">
-      <div class="input-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Username" required />
-      </div>
-
       <div class="input-group">
         <label for="email">Email</label>
         <input type="email" id="email" placeholder="Email" required />
@@ -148,9 +141,7 @@
     </div>
   </div>
 
-  <!-- Firebase Initialization Script -->
   <script>
-    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
       authDomain: "streamandearn.firebaseapp.com",
@@ -159,50 +150,28 @@
       messagingSenderId: "276919948850",
       appId: "1:276919948850:web:1dc74994262b2ef9e54e2b"
     };
-
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    const db = firebase.firestore();
 
-    // Handle registration form submission
     document.getElementById('registerForm').addEventListener('submit', function(event) {
       event.preventDefault();
 
-      const username = document.getElementById('username').value;
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
 
-      // Validate password match
       if (password !== confirmPassword) {
-        alert('Passwords do not match!');
+        alert('Passwords do not match');
         return;
       }
 
-      // Register the user with Firebase Authentication
       auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          // User successfully created
-          const user = userCredential.user;
-
-          // Add the username and email to Firestore under the 'users' collection
-          db.collection("users").doc(user.uid).set({
-            username: username,
-            email: email
-          })
-          .then(() => {
-            alert('Account created successfully! Please log in.');
-            window.location.href = 'login.html';  // Redirect to login page
-          })
-          .catch((error) => {
-            alert("Error saving data: " + error.message);
-          });
+          alert('Registration successful!');
+          window.location.href = 'login.html';
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          alert("Error: " + errorMessage);
+          alert("Error: " + error.message);
         });
     });
   </script>
