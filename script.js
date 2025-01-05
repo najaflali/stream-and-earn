@@ -30,15 +30,19 @@ function updateUserDetails(user) {
         firestore.collection('users').doc(user.uid).get().then((doc) => {
             const userData = doc.data();
             document.getElementById('earnings').textContent = `$${userData?.earnings || '0.00'}`;
+        }).catch((error) => {
+            console.error('Error fetching user data: ', error);
         });
     }
 }
 
 // Page-specific logic
-if (window.location.pathname === '/index.html') {
-    // Code for index.html
+const path = window.location.pathname;
+
+if (path === '/index.html') {
+    // Logic for index.html
     console.log('Index page script running');
-} else if (window.location.pathname === '/dashboard.html') {
+} else if (path === '/dashboard.html') {
     // Code for dashboard.html
     redirectIfNotLoggedIn();
     auth.onAuthStateChanged((user) => {
@@ -52,7 +56,7 @@ if (window.location.pathname === '/index.html') {
             window.location.href = 'login.html';
         });
     });
-} else if (window.location.pathname === '/upload.html') {
+} else if (path === '/upload.html') {
     // Code for upload.html
     redirectIfNotLoggedIn();
 
@@ -67,12 +71,14 @@ if (window.location.pathname === '/index.html') {
 
             storageRef.put(file).then(() => {
                 alert('File uploaded successfully!');
+            }).catch((error) => {
+                alert('Error uploading file: ' + error.message);
             });
         } else {
             alert('Please select a file to upload.');
         }
     });
-} else if (window.location.pathname === '/login.html') {
+} else if (path === '/login.html') {
     // Code for login.html
     document.getElementById('loginForm').addEventListener('submit', (e) => {
         e.preventDefault();
@@ -84,10 +90,10 @@ if (window.location.pathname === '/index.html') {
                 window.location.href = 'dashboard.html';
             })
             .catch((error) => {
-                alert(error.message);
+                alert('Error: ' + error.message);
             });
     });
-} else if (window.location.pathname === '/register.html') {
+} else if (path === '/register.html') {
     // Code for register.html
     document.getElementById('registerForm').addEventListener('submit', (e) => {
         e.preventDefault();
@@ -108,7 +114,7 @@ if (window.location.pathname === '/index.html') {
                 window.location.href = 'dashboard.html';
             })
             .catch((error) => {
-                alert(error.message);
+                alert('Error: ' + error.message);
             });
     });
 }

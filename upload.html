@@ -141,6 +141,7 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const firestore = firebase.firestore();
+    const storage = firebase.storage();
 
     auth.onAuthStateChanged(user => {
       if (user) {
@@ -163,7 +164,45 @@
 
     document.getElementById('uploadForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      alert('File upload feature is under construction.');
+      
+      const title = document.getElementById('title').value;
+      const file = document.getElementById('file').files[0];
+      
+      if (!title || !file) {
+        alert('Please provide both a title and a file.');
+        return;
+      }
+
+      const user = auth.currentUser;
+      const fileRef = storage.ref().child(`uploads/${user.uid}/${file.name}`);
+
+      const uploadTask = fileRef.put(file);
+
+      uploadTask.on('state_changed', 
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done`);
+        }, 
+        (error) => {
+          alert('Upload failed: ' + error.message);
+        }, 
+        () => {
+          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            // Save metadata to Firestore
+            firestore.collection('uploads').add({
+              userId: user.uid,
+              title: title,
+              fileUrl: downloadURL,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+              alert('Content uploaded successfully!');
+              document.getElementById('uploadForm').reset();
+            }).catch((error) => {
+              alert('Error saving content: ' + error.message);
+            });
+          });
+        }
+      );
     });
   </script>
 </body>

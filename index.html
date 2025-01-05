@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="script.js"></script>
-    <!-- Add Firebase SDKs before your own scripts -->
+    <script src="script.js"></script>
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
@@ -268,26 +268,23 @@
     </footer>
 
     <script>
-        // Initialize Firebase
+        // Firebase Initialization
         const firebaseConfig = {
-            apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
-            authDomain: "streamandearn.firebaseapp.com",
-            projectId: "streamandearn",
-            storageBucket: "streamandearn.appspot.com",
-            messagingSenderId: "276919948850",
-            appId: "1:276919948850:web:6b41b05c2ebe4483e54e2b"
+            apiKey: "AIzaSyAmn_a4P1Zw1FUf-vWeCQ8RgHJLmj9u8FY",
+            authDomain: "your-project-id.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project-id.appspot.com",
+            messagingSenderId: "your-messaging-sender-id",
+            appId: "your-app-id"
         };
+        firebase.initializeApp(firebaseConfig);
 
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const firestore = firebase.firestore();
-
-        // Check if the user is logged in
-        const isLoggedIn = localStorage.getItem("isLoggedIn");
-
-        if (!isLoggedIn) {
-            window.location.href = "login.html"; // Redirect to login page
-        }
+        // Redirect if not logged in
+        firebase.auth().onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'login.html';
+            }
+        });
     </script>
 
 </body>

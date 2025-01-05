@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="script.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cartoons - Stream & Earn</title>
@@ -63,7 +62,7 @@
             padding: 15px;
             margin: 10px 20px;
             transition: transform 0.3s;
-            flex: 1 1 calc(33.33% - 20px); /* Improved responsiveness */
+            flex: 1 1 calc(33.33% - 20px);
             text-align: center;
         }
 
@@ -113,7 +112,6 @@
             text-decoration: underline;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .movie-item {
                 flex: 1 1 calc(50% - 20px);
@@ -128,44 +126,37 @@
     </style>
 </head>
 <body>
-
-    <!-- Navigation Bar -->
     <div class="navbar">
         <div>
             <a href="index.html">Home</a>
             <a href="movies.html">Movies</a>
             <a href="cartoons.html">Cartoons</a>
             <a href="dramas.html">Dramas</a>
-            <a href="dashboard.html">Dashboard</a> <!-- Link to Dashboard -->
+            <a href="dashboard.html">Dashboard</a>
             <a href="contact.html">Contact Us</a>
         </div>
     </div>
 
-    <!-- Header Section -->
     <div class="header">
         <h1>Popular Cartoons</h1>
         <p>Explore the funniest and most loved cartoons!</p>
     </div>
 
-    <!-- Cartoons Section -->
     <div class="movies-section">
-        <!-- Cartoon Item -->
         <div class="movie-item">
             <img src="https://github.com/najaflali/stream-and-earn/raw/main/images/motupatlu1.jpg" alt="Cartoon 1">
             <p>Cartoon 1</p>
-            <button onclick="alert('Playing Cartoon 1')">Watch</button>
+            <button onclick="window.location.href='cartoon1.html'">Watch</button>
         </div>
-        <!-- Cartoon Item -->
         <div class="movie-item">
             <img src="https://github.com/najaflali/stream-and-earn/raw/main/images/motupatlu2.jpg" alt="Cartoon 2">
             <p>Cartoon 2</p>
-            <button onclick="alert('Playing Cartoon 2')">Watch</button>
+            <button onclick="window.location.href='cartoon2.html'">Watch</button>
         </div>
-        <!-- Cartoon Item -->
         <div class="movie-item">
             <img src="https://github.com/najaflali/stream-and-earn/raw/main/images/motupatlu3.jpg" alt="Cartoon 3">
             <p>Cartoon 3</p>
-            <button onclick="alert('Playing Cartoon 3')">Watch</button>
+            <button onclick="window.location.href='cartoon3.html'">Watch</button>
         </div>
     </div>
 
@@ -176,5 +167,6 @@
         </p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>

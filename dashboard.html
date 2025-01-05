@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upload Content - StreamAndEarn</title>
+  <title>User Dashboard - StreamAndEarn</title>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -31,35 +31,39 @@
     .container {
       background-color: #333333;
       padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      max-width: 600px;
+      border-radius: 15px;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+      max-width: 750px;
       width: 100%;
     }
 
     h2 {
       color: #f39c12;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      font-size: 28px;
+      font-weight: bold;
     }
 
     .info {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      font-size: 18px;
     }
 
     .info p {
-      margin: 8px 0;
+      margin: 10px 0;
     }
 
     .btn {
       background-color: #f39c12;
       color: #1a1a1a;
       border: none;
-      padding: 10px 20px;
-      font-size: 16px;
+      padding: 12px 25px;
+      font-size: 18px;
       cursor: pointer;
-      border-radius: 5px;
+      border-radius: 8px;
+      margin: 8px 0;
+      width: 100%;
       transition: background-color 0.3s ease;
-      margin: 5px;
     }
 
     .btn:hover {
@@ -70,12 +74,12 @@
       background-color: #e74c3c;
       color: #ffffff;
       font-weight: bold;
-      margin-top: 20px;
-      border: none;
-      padding: 12px 25px;
-      font-size: 18px;
-      border-radius: 8px;
+      padding: 14px 30px;
+      font-size: 20px;
+      border-radius: 10px;
       cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
     }
 
     #logoutBtn:hover {
@@ -83,13 +87,24 @@
     }
 
     .nav-buttons {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    /* Loading Spinner */
+    #loading {
+      display: none;
+      color: #f39c12;
+      font-size: 22px;
+      margin-top: 25px;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Welcome to StreamAndEarn</h2>
+
+    <!-- Loading Spinner -->
+    <div id="loading">Loading...</div>
 
     <!-- User Info -->
     <div class="info">
@@ -103,7 +118,7 @@
       <button class="btn" onclick="navigateTo('movies.html')">Movies</button>
       <button class="btn" onclick="navigateTo('dramas.html')">Dramas</button>
       <button class="btn" onclick="navigateTo('cartoons.html')">Cartoons</button>
-      <button class="btn" onclick="navigateTo('withdraw.html')">Withdraw</button>
+      <button class="btn" onclick="navigateTo('withdraw.html')">Withdraw Earnings</button>
       <button class="btn" onclick="navigateTo('upload.html')">Upload Content</button>
     </div>
 
@@ -126,13 +141,16 @@
     const firestore = firebase.firestore();
 
     auth.onAuthStateChanged(user => {
+      document.getElementById('loading').style.display = 'none';
       if (user) {
         document.getElementById('username').textContent = user.displayName || 'Anonymous';
         document.getElementById('email').textContent = user.email;
-        firestore.collection('users').doc(user.uid).get().then(doc => {
-          const userData = doc.data();
-          document.getElementById('earnings').textContent = `$${userData.earnings || '0.00'}`;
-        });
+        firestore.collection('users').doc(user.uid).get()
+          .then(doc => {
+            const userData = doc.data();
+            document.getElementById('earnings').textContent = `$${userData.earnings || '0.00'}`;
+          })
+          .catch(error => alert('Error fetching user data: ' + error.message));
       } else {
         window.location.href = 'login.html';
       }

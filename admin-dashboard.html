@@ -84,6 +84,8 @@
         .loading {
             text-align: center;
             margin-top: 50px;
+            font-size: 18px;
+            color: #6c757d;
         }
     </style>
 </head>
@@ -106,33 +108,34 @@
         <h2>Overview</h2>
         <div class="dashboard-card">
             <div class="card-title">Total Users</div>
-            <div class="card-content" id="userCount">Loading...</div>
+            <div class="card-content" id="userCount" class="loading">Loading...</div>
         </div>
         <div class="dashboard-card">
             <div class="card-title">Total Content</div>
-            <div class="card-content" id="contentCount">Loading...</div>
+            <div class="card-content" id="contentCount" class="loading">Loading...</div>
         </div>
         <div class="dashboard-card">
             <div class="card-title">Total Earnings</div>
-            <div class="card-content" id="totalEarnings">Loading...</div>
+            <div class="card-content" id="totalEarnings" class="loading">Loading...</div>
         </div>
     </div>
 
     <footer>
-        <p>© 2024 StreamAndEarn. All rights reserved.</p>
+        <p>© 2025 StreamAndEarn. All rights reserved.</p>
     </footer>
 
-    <!-- Firebase Configuration & Initialization -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <!-- Firebase Configuration -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js"></script>
     <script>
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDj43pdPs0Yo5NpTJFQju4nrOjm6mYgNQU",
             authDomain: "streamandearn1.firebaseapp.com",
             databaseURL: "https://streamandearn1-default-rtdb.firebaseio.com",
             projectId: "streamandearn1",
-            storageBucket: "streamandearn1.firebasestorage.app",
+            storageBucket: "streamandearn1.appspot.com",
             messagingSenderId: "824833347843",
             appId: "1:824833347843:web:cddd5b23134a641d941936"
         };
@@ -140,38 +143,46 @@
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const auth = firebase.auth();
 
-        // Fetch Data for Dashboard
+        // Fetch dashboard data
         function fetchDashboardData() {
-            // Get Total Users
-            db.collection('users').get().then(snapshot => {
-                document.getElementById('userCount').textContent = snapshot.size;
-            }).catch(error => {
-                console.error("Error fetching user data: ", error);
-            });
-
-            // Get Total Content
-            db.collection('content').get().then(snapshot => {
-                document.getElementById('contentCount').textContent = snapshot.size;
-            }).catch(error => {
-                console.error("Error fetching content data: ", error);
-            });
-
-            // Get Total Earnings (You can customize this logic based on your app's data structure)
-            db.collection('earnings').get().then(snapshot => {
-                let total = 0;
-                snapshot.forEach(doc => {
-                    total += doc.data().amount;
+            // Fetch total users
+            db.collection('users').get()
+                .then(snapshot => {
+                    document.getElementById('userCount').textContent = snapshot.size || 0;
+                })
+                .catch(error => {
+                    console.error("Error fetching user data: ", error);
+                    document.getElementById('userCount').textContent = "Error";
                 });
-                document.getElementById('totalEarnings').textContent = `$${total}`;
-            }).catch(error => {
-                console.error("Error fetching earnings data: ", error);
-            });
+
+            // Fetch total content
+            db.collection('content').get()
+                .then(snapshot => {
+                    document.getElementById('contentCount').textContent = snapshot.size || 0;
+                })
+                .catch(error => {
+                    console.error("Error fetching content data: ", error);
+                    document.getElementById('contentCount').textContent = "Error";
+                });
+
+            // Fetch total earnings
+            db.collection('earnings').get()
+                .then(snapshot => {
+                    let totalEarnings = 0;
+                    snapshot.forEach(doc => {
+                        totalEarnings += parseFloat(doc.data().amount) || 0;
+                    });
+                    document.getElementById('totalEarnings').textContent = `$${totalEarnings.toFixed(2)}`;
+                })
+                .catch(error => {
+                    console.error("Error fetching earnings data: ", error);
+                    document.getElementById('totalEarnings').textContent = "Error";
+                });
         }
 
-        // Call the function on load
-        window.onload = fetchDashboardData;
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', fetchDashboardData);
     </script>
 </body>
 

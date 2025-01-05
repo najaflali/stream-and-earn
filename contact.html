@@ -1,11 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="script.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+
+    <script>
+        // Firebase configuration (replace with your actual credentials)
+        const firebaseConfig = {
+            apiKey: "your-api-key",
+            authDomain: "your-auth-domain",
+            projectId: "your-project-id",
+            storageBucket: "your-storage-bucket",
+            messagingSenderId: "your-messaging-sender-id",
+            appId: "your-app-id"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Firebase Authentication to handle authentication status
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log('User is logged in:', user);
+            } else {
+                console.log('User is not logged in');
+            }
+        });
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Stream & Earn for inquiries, support, and feedback.">
+    <meta name="author" content="Stream & Earn">
+    <meta name="keywords" content="Contact Us, Stream & Earn, Support">
     <title>Contact Us - Stream & Earn</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+
     <style>
         /* Basic Styles */
         body {
@@ -62,6 +93,12 @@
             color: #ffffff;
         }
 
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: none;
+            border-color: #f39c12;
+            box-shadow: 0 0 5px #f39c12;
+        }
+
         .contact-form button {
             padding: 10px 20px;
             background-color: #f39c12;
@@ -75,6 +112,27 @@
         .contact-form button:hover {
             background-color: #ffffff;
             color: #f39c12;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333333;
+            padding: 15px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        footer a {
+            color: #f39c12;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #ffffff;
+        }
+
+        footer p {
+            margin: 0;
         }
     </style>
 </head>
@@ -107,12 +165,15 @@
             <button type="submit">Send Message</button>
         </form>
     </div>
-<footer style="background-color: #333333; padding: 15px; text-align: center; color: #ffffff;">
-    <p>
-        <a href="privacy.html" style="color: #f39c12; text-decoration: none;">Privacy Policy</a> |
-        <a href="terms.html" style="color: #f39c12; text-decoration: none;">Terms of Service</a>
-    </p>
-</footer>
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            <a href="privacy.html">Privacy Policy</a> |
+            <a href="terms.html">Terms of Service</a>
+        </p>
+        <p>© 2025 Stream & Earn. All Rights Reserved.</p>
+    </footer>
 
 </body>
 </html>
