@@ -10,7 +10,7 @@ const firebaseConfig = {
   storageBucket: "streamandearn1.firebasestorage.app",
   messagingSenderId: "824833347843",
   appId: "1:824833347843:web:cddd5b23134a641d941936"
-};
+};s
 
 // Initialize Firebase App
 const app = initializeApp(firebaseConfig);
