@@ -3,12 +3,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebas
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDj43pdPs0Yo5NpTJFQju4nrOjm6mYgNQU",
+  authDomain: "streamandearn1.firebaseapp.com",
+  databaseURL: "https://streamandearn1-default-rtdb.firebaseio.com",
+  projectId: "streamandearn1",
+  storageBucket: "streamandearn1.firebasestorage.app",
+  messagingSenderId: "824833347843",
+  appId: "1:824833347843:web:cddd5b23134a641d941936"
 };
 
 // Initialize Firebase App
@@ -24,4 +25,9 @@ onAuthStateChanged(auth, (user) => {
     } else {
         console.log("No user is logged in.");
     }
+});
+console.log("Firebase Initialized:", firebase.apps.length > 0);
+document.getElementById('registerForm').addEventListener('submit', function(event) {
+  console.log("Register form submitted");
+  // Existing code
 });
