@@ -10,7 +10,7 @@ const firebaseConfig = {
   storageBucket: "streamandearn1.firebasestorage.app",
   messagingSenderId: "824833347843",
   appId: "1:824833347843:web:cddd5b23134a641d941936"
-};s
+};
 
 // Initialize Firebase App
 const app = initializeApp(firebaseConfig);
@@ -26,8 +26,13 @@ onAuthStateChanged(auth, (user) => {
         console.log("No user is logged in.");
     }
 });
-console.log("Firebase Initialized:", firebase.apps.length > 0);
-document.getElementById('registerForm').addEventListener('submit', function(event) {
-  console.log("Register form submitted");
-  // Existing code
+
+// Ensure Firebase is initialized
+console.log("Firebase Initialized:", app ? "Yes" : "No");
+
+// Example Register Form Submission Listener (Adjust ID if needed)
+document.getElementById('registerForm')?.addEventListener('submit', function(event) {
+    event.preventDefault();
+    console.log("Register form submitted");
+    // Add form handling code here
 });
