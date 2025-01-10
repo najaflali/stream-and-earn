@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - StreamAndEarn</title>
-
+  
   <!-- Firebase SDK v8.x.x -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -27,6 +27,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      padding: 20px;
     }
 
     .container {
@@ -49,6 +50,12 @@
       margin-bottom: 20px;
       display: flex;
       flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: bold;
     }
 
     input {
@@ -102,6 +109,13 @@
       text-decoration: underline;
     }
 
+    #error-message {
+      margin-top: 10px;
+      color: red;
+      font-size: 14px;
+      text-align: center;
+    }
+
     @media (max-width: 500px) {
       .container {
         padding: 25px;
@@ -114,7 +128,6 @@
   </style>
 </head>
 <body>
-
   <div class="container">
     <h2>Login</h2>
 
@@ -132,6 +145,8 @@
       <button type="submit" class="btn">Login</button>
     </form>
 
+    <div id="error-message"></div>
+
     <div class="link">
       <p>Don't have an account? <a href="register.html">Register here</a></p>
       <p><a href="reset-password.html">Forgot Password?</a></p>
@@ -139,40 +154,36 @@
   </div>
 
   <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
-    authDomain: "streamandearn.firebaseapp.com",
-    projectId: "streamandearn",
-    storageBucket: "streamandearn.appspot.com",
-    messagingSenderId: "276919948850",
-    appId: "1:276919948850:web:1dc74994262b2ef9e54e2b"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
+      authDomain: "streamandearn.firebaseapp.com",
+      projectId: "streamandearn",
+      storageBucket: "streamandearn.appspot.com",
+      messagingSenderId: "276919948850",
+      appId: "1:276919948850:web:1dc74994262b2ef9e54e2b"
+    };
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-  document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
 
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('error-message');
 
-    auth.signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        alert('Login successful!');
-        window.location.href = 'dashboard.html';
-      })
-      .catch((error) => {
-        if (error.code === 'auth/user-not-found') {
-          alert('User not found. Please check your email or register.');
-        } else if (error.code === 'auth/wrong-password') {
-          alert('Incorrect password. Please try again.');
-        } else {
-          alert('Error: ' + error.message);
-        }
-      });
-  });
-</script>
+      errorMessage.textContent = ""; // Clear previous errors
 
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          alert('Login successful!');
+          window.location.href = 'dashboard.html';
+        })
+        .catch((error) => {
+          errorMessage.textContent = error.message;
+        });
+    });
+  </script>
 </body>
 </html>

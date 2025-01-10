@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="script.js"></script>
     <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore-compat.js"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -167,15 +166,14 @@
             color: #f39c12;
             transform: scale(1.05);
         }
+   
     </style>
 </head>
 <body>
-
     <!-- Navigation Bar -->
     <div class="navbar">
         <div>
             <a href="index.html">Home</a>
-           
             <a href="contact.html">Contact Us</a>
         </div>
         <div class="search-bar">
@@ -196,6 +194,8 @@
     </div>
 
     <!-- Trending Section with Categories -->
+    <div class="trending">
+          <!-- Trending Section with Categories -->
     <div class="trending">
         <h2>Trending Movies</h2>
         <div class="trending-grid">
@@ -263,26 +263,38 @@
             <a href="terms.html" style="color: #f39c12; text-decoration: none;">Terms of Service</a>
         </p>
     </footer>
+    </div>
 
     <script>
-        // Firebase Initialization
+        // Firebase Configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyAmn_a4P1Zw1FUf-vWeCQ8RgHJLmj9u8FY",
-            authDomain: "your-project-id.firebaseapp.com",
-            projectId: "your-project-id",
-            storageBucket: "your-project-id.appspot.com",
-            messagingSenderId: "your-messaging-sender-id",
-            appId: "your-app-id"
-        };
+  apiKey: "AIzaSyDj43pdPs0Yo5NpTJFQju4nrOjm6mYgNQU",
+  authDomain: "streamandearn1.firebaseapp.com",
+  databaseURL: "https://streamandearn1-default-rtdb.firebaseio.com",
+  projectId: "streamandearn1",
+  storageBucket: "streamandearn1.firebasestorage.app",
+  messagingSenderId: "824833347843",
+  appId: "1:824833347843:web:cddd5b23134a641d941936"
+};
+
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-
-        // Redirect if not logged in
-        firebase.auth().onAuthStateChanged(user => {
-            if (!user) {
-                window.location.href = 'login.html';
-            }
+        console.log("Firebase initialized successfully!");
+// Function to test Firebase Authentication
+function testFirebaseAuth() {
+    firebase.auth().signInWithEmailAndPassword("test@example.com", "test123")
+        .then((userCredential) => {
+            const user = userCredential.user;
+            alert(`Firebase Auth Test Successful! User: ${user.email}`);
+        })
+        .catch((error) => {
+            console.error("Firebase Auth Test Failed:", error.message);
+            alert("Firebase Auth Test Failed. Check the console for details.");
         });
-    </script>
+}
 
+// Call this function in your console or attach it to a test button
+
+    </script>
 </body>
 </html>

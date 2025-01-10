@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
+    /* Global Styles */
     * {
       margin: 0;
       padding: 0;
@@ -106,6 +107,13 @@
       text-decoration: underline;
     }
 
+    #error-message {
+      margin-top: 15px;
+      font-size: 14px;
+      color: red;
+      text-align: center;
+    }
+
     @media (max-width: 500px) {
       .container {
         padding: 25px;
@@ -141,12 +149,15 @@
       <button type="submit" class="btn">Register</button>
     </form>
 
+    <div id="error-message"></div>
+
     <div class="link">
       <p>Already have an account? <a href="login.html">Login here</a></p>
     </div>
   </div>
 
   <script>
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
       authDomain: "streamandearn.firebaseapp.com",
@@ -158,25 +169,34 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+    // Register form handling
     document.getElementById('registerForm').addEventListener('submit', function(event) {
       event.preventDefault();
 
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
+      const errorMessage = document.getElementById('error-message');
 
-      if (password !== confirmPassword) {
-        alert('Passwords do not match');
+      // Password validation
+      if (password.length < 6) {
+        errorMessage.textContent = 'Password should be at least 6 characters long.';
         return;
       }
 
+      if (password !== confirmPassword) {
+        errorMessage.textContent = 'Passwords do not match.';
+        return;
+      }
+
+      // Firebase Authentication
       auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
+        .then(() => {
           alert('Registration successful!');
           window.location.href = 'login.html';
         })
         .catch((error) => {
-          alert("Error: " + error.message);
+          errorMessage.textContent = error.message;
         });
     });
   </script>

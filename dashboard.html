@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Dashboard - StreamAndEarn</title>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -14,13 +14,13 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
+  <!-- CSS Styles -->
   <style>
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: #1a1a1a;
-      color: #ffffff;
+      background: linear-gradient(to bottom, #1f1c2c, #928dab);
+      color: #fff;
       margin: 0;
-      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -29,24 +29,24 @@
     }
 
     .container {
-      background-color: #333333;
+      background-color: #2c3e50;
       padding: 30px;
       border-radius: 15px;
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
       max-width: 750px;
       width: 100%;
     }
 
     h2 {
-      color: #f39c12;
-      margin-bottom: 30px;
+      color: #f1c40f;
+      margin-bottom: 20px;
       font-size: 28px;
-      font-weight: bold;
     }
 
     .info {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       font-size: 18px;
+      text-align: left;
     }
 
     .info p {
@@ -54,31 +54,28 @@
     }
 
     .btn {
-      background-color: #f39c12;
-      color: #1a1a1a;
+      background-color: #3498db;
+      color: #fff;
       border: none;
-      padding: 12px 25px;
-      font-size: 18px;
+      padding: 12px 20px;
+      font-size: 16px;
       cursor: pointer;
       border-radius: 8px;
-      margin: 8px 0;
+      margin: 10px 0;
+      transition: background-color 0.3s;
       width: 100%;
-      transition: background-color 0.3s ease;
     }
 
     .btn:hover {
-      background-color: #d68910;
+      background-color: #2980b9;
     }
 
     #logoutBtn {
       background-color: #e74c3c;
-      color: #ffffff;
-      font-weight: bold;
-      padding: 14px 30px;
-      font-size: 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      width: 100%;
+      color: #fff;
+      font-size: 18px;
+      border-radius: 8px;
+      padding: 12px 20px;
       margin-top: 20px;
     }
 
@@ -86,16 +83,11 @@
       background-color: #c0392b;
     }
 
-    .nav-buttons {
-      margin-bottom: 25px;
-    }
-
-    /* Loading Spinner */
     #loading {
       display: none;
-      color: #f39c12;
-      font-size: 22px;
-      margin-top: 25px;
+      color: #f1c40f;
+      font-size: 20px;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -125,6 +117,7 @@
     <button id="logoutBtn">Logout</button>
   </div>
 
+  <!-- Firebase Configuration and Logic -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
@@ -136,19 +129,26 @@
       appId: "1:276919948850:web:1dc74994262b2ef9e54e2b"
     };
 
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const firestore = firebase.firestore();
 
+    // Handle Auth State Changes
     auth.onAuthStateChanged(user => {
       document.getElementById('loading').style.display = 'none';
       if (user) {
         document.getElementById('username').textContent = user.displayName || 'Anonymous';
         document.getElementById('email').textContent = user.email;
+
         firestore.collection('users').doc(user.uid).get()
           .then(doc => {
-            const userData = doc.data();
-            document.getElementById('earnings').textContent = `$${userData.earnings || '0.00'}`;
+            if (doc.exists) {
+              const userData = doc.data();
+              document.getElementById('earnings').textContent = `$${userData?.earnings || '0.00'}`;
+            } else {
+              document.getElementById('earnings').textContent = '$0.00';
+            }
           })
           .catch(error => alert('Error fetching user data: ' + error.message));
       } else {
@@ -156,14 +156,20 @@
       }
     });
 
+    // Logout Functionality
     document.getElementById('logoutBtn').addEventListener('click', () => {
       auth.signOut()
         .then(() => window.location.href = 'login.html')
         .catch(error => alert('Error logging out: ' + error.message));
     });
 
+    // Navigation Functionality
     function navigateTo(page) {
-      window.location.href = page;
+      try {
+        window.location.href = page;
+      } catch (error) {
+        alert('Navigation error: ' + error.message);
+      }
     }
   </script>
 </body>

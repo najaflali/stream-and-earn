@@ -7,6 +7,7 @@
     <title>Admin Dashboard - Stream and Earn</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+<script src="script.js"></script>
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -108,15 +109,15 @@
         <h2>Overview</h2>
         <div class="dashboard-card">
             <div class="card-title">Total Users</div>
-            <div class="card-content" id="userCount" class="loading">Loading...</div>
+            <div class="card-content" id="userCount">Loading...</div>
         </div>
         <div class="dashboard-card">
             <div class="card-title">Total Content</div>
-            <div class="card-content" id="contentCount" class="loading">Loading...</div>
+            <div class="card-content" id="contentCount">Loading...</div>
         </div>
         <div class="dashboard-card">
             <div class="card-title">Total Earnings</div>
-            <div class="card-content" id="totalEarnings" class="loading">Loading...</div>
+            <div class="card-content" id="totalEarnings">Loading...</div>
         </div>
     </div>
 
@@ -183,6 +184,7 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', fetchDashboardData);
+
     </script>
 </body>
 
