@@ -8,6 +8,7 @@
   <!-- Firebase SDK v8.x.x -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
@@ -158,18 +159,19 @@
 
   <script>
     // Firebase configuration
-   const firebaseConfig = {
-  apiKey: "AIzaSyDj43pdPs0Yo5NpTJFQju4nrOjm6mYgNQU",
-  authDomain: "streamandearn1.firebaseapp.com",
-  databaseURL: "https://streamandearn1-default-rtdb.firebaseio.com",
-  projectId: "streamandearn1",
-  storageBucket: "streamandearn1.firebasestorage.app",
-  messagingSenderId: "824833347843",
-  appId: "1:824833347843:web:cddd5b23134a641d941936"
+    const firebaseConfig = {
+      apiKey: "AIzaSyDj43pdPs0Yo5NpTJFQju4nrOjm6mYgNQU",
+      authDomain: "streamandearn1.firebaseapp.com",
+      databaseURL: "https://streamandearn1-default-rtdb.firebaseio.com",
+      projectId: "streamandearn1",
+      storageBucket: "streamandearn1.firebasestorage.app",
+      messagingSenderId: "824833347843",
+      appId: "1:824833347843:web:cddd5b23134a641d941936"
     };
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
+    const firestore = firebase.firestore();
 
     // Register form handling
     document.getElementById('registerForm').addEventListener('submit', function(event) {
@@ -193,9 +195,23 @@
 
       // Firebase Authentication
       auth.createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          alert('Registration successful!');
-          window.location.href = 'login.html';
+        .then((userCredential) => {
+          const user = userCredential.user;
+          
+          // Save the user details to Firestore
+          firestore.collection('users').doc(user.uid).set({
+            username: email.split('@')[0],  // Using email username as default username
+            email: user.email,
+            role: 'user',  // Default role as 'user'
+            earnings: 0.00
+          })
+          .then(() => {
+            alert('Registration successful!');
+            window.location.href = 'login.html'; // Redirect to login page
+          })
+          .catch((error) => {
+            errorMessage.textContent = error.message;
+          });
         })
         .catch((error) => {
           errorMessage.textContent = error.message;
