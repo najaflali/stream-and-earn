@@ -118,7 +118,7 @@
     <button id="logoutBtn">Logout</button>
   </div>
 
-  <!-- Firebase Configuration and Logic -->
+    <!-- Firebase Configuration and Logic -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
@@ -136,23 +136,36 @@
     const firestore = firebase.firestore();
 
     // Handle Auth State Changes
-    auth.onAuthStateChanged(user => {
+    auth.onAuthStateChanged(async (user) => {
       document.getElementById('loading').style.display = 'none';
       if (user) {
-        document.getElementById('username').textContent = user.displayName || 'Anonymous';
-        document.getElementById('email').textContent = user.email;
+        const userRef = firestore.collection('users').doc(user.uid);
 
-        firestore.collection('users').doc(user.uid).get()
-          .then(doc => {
-            if (doc.exists) {
-              const userData = doc.data();
-              document.getElementById('earnings').textContent = `$${userData?.earnings || '0.00'}`;
+        try {
+          const doc = await userRef.get();
+          if (doc.exists) {
+            const userData = doc.data();
+            const userRole = userData.role || 'user'; // Default role as 'user'
+
+            // Update UI with user info
+            document.getElementById('username').textContent = user.displayName || 'Anonymous';
+            document.getElementById('email').textContent = user.email;
+            document.getElementById('earnings').textContent = `$${userData.earnings || '0.00'}`;
+
+            // Redirect based on role
+            if (userRole === 'admin') {
+              window.location.href = 'admin-dashboard.html';
             } else {
-              document.getElementById('earnings').textContent = '$0.00';
+              console.log("Welcome, regular user!");
             }
-          })
-          .catch(error => alert('Error fetching user data: ' + error.message));
+          } else {
+            alert('User data not found in Firestore!');
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
       } else {
+        // Redirect to login if no user is logged in
         window.location.href = 'login.html';
       }
     });
@@ -173,5 +186,6 @@
       }
     }
   </script>
+
 </body>
 </html>

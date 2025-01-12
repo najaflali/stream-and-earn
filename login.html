@@ -4,15 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - StreamAndEarn</title>
-  
-  <!-- Firebase SDK v8.x.x -->
+
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-  <style>
+   <style>
     * {
       margin: 0;
       padding: 0;
@@ -130,18 +128,15 @@
 <body>
   <div class="container">
     <h2>Login</h2>
-
     <form id="loginForm">
       <div class="input-group">
         <label for="email">Email</label>
         <input type="email" id="email" placeholder="Enter your email" required autocomplete="email" />
       </div>
-
       <div class="input-group">
         <label for="password">Password</label>
         <input type="password" id="password" placeholder="Enter your password" required autocomplete="current-password" />
       </div>
-
       <button type="submit" class="btn">Login</button>
     </form>
 
@@ -154,21 +149,12 @@
   </div>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
-      authDomain: "streamandearn.firebaseapp.com",
-      projectId: "streamandearn",
-      storageBucket: "streamandearn.appspot.com",
-      messagingSenderId: "276919948850",
-      appId: "1:276919948850:web:1dc74994262b2ef9e54e2b"
-    };
-
+    const firebaseConfig = { /* Firebase config */ };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
     document.getElementById('loginForm').addEventListener('submit', function(event) {
       event.preventDefault();
-
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       const errorMessage = document.getElementById('error-message');

@@ -5,14 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - StreamAndEarn</title>
 
-  <!-- Firebase SDK v8.x.x -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-  <style>
+<style>
     /* Global Styles */
     * {
       margin: 0;
@@ -158,23 +157,12 @@
   </div>
 
   <script>
-    // Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyDj43pdPs0Yo5NpTJFQju4nrOjm6mYgNQU",
-      authDomain: "streamandearn1.firebaseapp.com",
-      databaseURL: "https://streamandearn1-default-rtdb.firebaseio.com",
-      projectId: "streamandearn1",
-      storageBucket: "streamandearn1.firebasestorage.app",
-      messagingSenderId: "824833347843",
-      appId: "1:824833347843:web:cddd5b23134a641d941936"
-    };
-
+    const firebaseConfig = { /* Firebase config */ };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const firestore = firebase.firestore();
 
-    // Register form handling
-    document.getElementById('registerForm').addEventListener('submit', function(event) {
+    document.getElementById('registerForm').addEventListener('submit', async function(event) {
       event.preventDefault();
 
       const email = document.getElementById('email').value;
@@ -182,42 +170,29 @@
       const confirmPassword = document.getElementById('confirmPassword').value;
       const errorMessage = document.getElementById('error-message');
 
-      // Password validation
-      if (password.length < 6) {
-        errorMessage.textContent = 'Password should be at least 6 characters long.';
-        return;
-      }
+      errorMessage.textContent = '';
 
       if (password !== confirmPassword) {
-        errorMessage.textContent = 'Passwords do not match.';
+        errorMessage.textContent = 'Passwords do not match!';
         return;
       }
 
-      // Firebase Authentication
-      auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          
-          // Save the user details to Firestore
-          firestore.collection('users').doc(user.uid).set({
-            username: email.split('@')[0],  // Using email username as default username
-            email: user.email,
-            role: 'user',  // Default role as 'user'
-            earnings: 0.00
-          })
-          .then(() => {
-            alert('Registration successful!');
-            window.location.href = 'login.html'; // Redirect to login page
-          })
-          .catch((error) => {
-            errorMessage.textContent = error.message;
-          });
-        })
-        .catch((error) => {
-          errorMessage.textContent = error.message;
+      try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+        await firestore.collection('users').doc(user.uid).set({
+          email: user.email,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
+
+        alert('Registration successful! You can now log in.');
+        window.location.href = 'login.html';
+      } catch (error) {
+        errorMessage.textContent = error.message;
+        console.error('Error during registration:', error);
+      }
     });
   </script>
-
 </body>
 </html>
