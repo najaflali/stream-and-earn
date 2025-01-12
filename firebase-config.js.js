@@ -1,11 +1,9 @@
-// firebase-config.js
 const firebaseConfig = {
-  apiKey: "AIzaSyAmn_a4P1Zw1FUf8ByBAw4yH-vuGHtBLFs",
-  authDomain: "streamandearn.firebaseapp.com",
-  projectId: "streamandearn",
-  storageBucket: "streamandearn.appspot.com",
-  messagingSenderId: "276919948850",
-  appId: "1:276919948850:web:1dc74994262b2ef9e54e2b"
+  apiKey: "AIzaSyDj43pdPs0Yo5NpTJFQju4nrOjm6mYgNQU",
+  authDomain: "streamandearn1.firebaseapp.com",
+  databaseURL: "https://streamandearn1-default-rtdb.firebaseio.com",
+  projectId: "streamandearn1",
+  storageBucket: "streamandearn1.firebasestorage.app",
+  messagingSenderId: "824833347843",
+  appId: "1:824833347843:web:cddd5b23134a641d941936"
 };
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();

@@ -50,6 +50,20 @@
             color: #dddddd;
         }
 
+        .search-bar {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .search-bar input {
+            width: 80%;
+            max-width: 500px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #f39c12;
+            font-size: 1em;
+        }
+
         .movies-section {
             display: flex;
             flex-wrap: wrap;
@@ -137,8 +151,13 @@
         <p>Explore the latest and most popular movies!</p>
     </div>
 
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="Search for a movie..." onkeyup="filterMovies()">
+    </div>
+
     <!-- Movies Section -->
-    <div class="movies-section">
+    <div class="movies-section" id="movies-list">
         <!-- Movie Item -->
         <div class="movie-item">
             <img src="https://github.com/najaflali/stream-and-earn/raw/main/images/avenger1.jpg" alt="Avenger 1">
@@ -171,6 +190,18 @@
             <a href="terms.html">Terms of Service</a>
         </p>
     </footer>
+
+    <script>
+        function filterMovies() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const movies = document.querySelectorAll('.movie-item');
+
+            movies.forEach(movie => {
+                const title = movie.querySelector('p').textContent.toLowerCase();
+                movie.style.display = title.includes(searchInput) ? '' : 'none';
+            });
+        }
+    </script>
 
 </body>
 </html>
