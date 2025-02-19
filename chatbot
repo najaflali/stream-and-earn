@@ -1,0 +1,19 @@
+
+ 
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Assistant Chatbot</title>
+</head>
+<body>
+    <!-- Your Botpress Webchat Embed Code -->
+    <script src="https://cdn.botpress.cloud/webchat/v2/inject.js"></script>
+    <script>
+      window.botpressWebChat.init({
+          <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+<script src="https://files.bpcontent.cloud/2025/02/17/13/20250217131322-LOJ0JLJZ.js"></script>
+    </script>
+</body>
+</html>
